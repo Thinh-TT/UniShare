@@ -98,9 +98,9 @@ Task board này bám theo:
 
 | ID            | Task                              | Use Case | Status | Priority | Dependency               | Definition of Done                         |
 | ------------- | --------------------------------- | -------- | ------ | -------- | ------------------------ | ------------------------------------------ |
-| `API-INT-001` | Implement upvote/hủy upvote       | `FR-011` | `[ ]`  | P1       | `API-LIST-002`, `DB-003` | Unique upvote/user/listing, cập nhật count |
-| `API-INT-002` | Implement lấy danh sách comment   | `FR-012` | `[ ]`  | P1       | `DB-003`                 | Trả comments theo listing, paging          |
-| `API-INT-003` | Implement tạo/sửa/xóa mềm comment | `FR-012` | `[ ]`  | P1       | `API-INT-002`            | Validate ownership, reply cùng listing     |
+| `API-INT-001` | Implement upvote/hủy upvote       | `FR-011` | `[x]`  | P1       | `API-LIST-002`, `DB-003` | Unique upvote/user/listing, cập nhật count, thông báo cho chủ bài |
+| `API-INT-002` | Implement lấy danh sách comment   | `FR-012` | `[x]`  | P1       | `DB-003`                 | Trả comments theo listing, paging, newest first                  |
+| `API-INT-003` | Implement tạo/sửa/xóa mềm comment | `FR-012` | `[x]`  | P1       | `API-INT-002`            | Validate ownership, reply cùng listing, admin xóa được mọi comment |
 
 ### 6.5. Chat Realtime
 

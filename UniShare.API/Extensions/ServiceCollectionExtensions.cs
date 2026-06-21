@@ -171,6 +171,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IMetadataService, MetadataService>();
         services.AddScoped<IListingService, ListingService>();
         services.AddScoped<IListingImageService, ListingImageService>();
+        services.AddScoped<IInteractionService, InteractionService>();
         services.AddScoped<IAdminService, AdminService>();
         services.AddScoped<AdminSeedService>();
 
