@@ -9,6 +9,7 @@ public class User : BaseEntity
     public string PasswordHash { get; set; } = null!;
     public string FullName { get; set; } = null!;
     public string? AvatarUrl { get; set; }
+    public string Role { get; set; } = "User";
 
     public Guid? SchoolId { get; set; }
     public Guid? AreaId { get; set; }

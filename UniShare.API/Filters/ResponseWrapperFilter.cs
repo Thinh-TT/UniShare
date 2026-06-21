@@ -13,7 +13,8 @@ public class ResponseWrapperFilter : IAsyncResultFilter
             // Don't wrap ProblemDetails, file results, or already wrapped responses
             if (objectResult.Value is ProblemDetails ||
                 objectResult.Value is ApiResponse<object> ||
-                objectResult.Value is PagedResponse<object>)
+                (objectResult.Value?.GetType().IsGenericType == true &&
+                 objectResult.Value.GetType().GetGenericTypeDefinition() == typeof(PagedResponse<>)))
             {
                 await next();
                 return;

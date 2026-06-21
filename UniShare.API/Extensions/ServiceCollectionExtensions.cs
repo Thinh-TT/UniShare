@@ -162,4 +162,16 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
+
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+    {
+        services.AddScoped<IPasswordHasher, PasswordHasher>();
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IMetadataService, MetadataService>();
+        services.AddScoped<IListingService, ListingService>();
+        services.AddScoped<IListingImageService, ListingImageService>();
+
+        return services;
+    }
 }

@@ -16,6 +16,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(e => e.PasswordHash).IsRequired();
         builder.Property(e => e.FullName).IsRequired().HasMaxLength(150);
         builder.Property(e => e.AvatarUrl).HasMaxLength(500);
+        builder.Property(e => e.Role).IsRequired().HasMaxLength(20).HasDefaultValue("User");
 
         builder.Property(e => e.ReputationScore).IsRequired().HasColumnType("decimal(5,2)").HasDefaultValue(100.00m);
         builder.Property(e => e.TotalReviews).IsRequired().HasDefaultValue(0);
@@ -27,7 +28,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         // Unique constraints
         builder.HasIndex(e => e.Email).IsUnique();
-        builder.HasIndex(e => e.PhoneNumber).IsUnique();
+        builder.HasIndex(e => e.PhoneNumber).IsUnique().HasFilter("[PhoneNumber] IS NOT NULL");
 
         // Relationships
         builder.HasOne(e => e.School)

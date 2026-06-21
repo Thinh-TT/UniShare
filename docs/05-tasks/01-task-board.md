@@ -157,21 +157,21 @@ Task board này bám theo:
 
 | ID            | Task                       | Use Case           | Status | Priority | Dependency                    | Definition of Done                 |
 | ------------- | -------------------------- | ------------------ | ------ | -------- | ----------------------------- | ---------------------------------- |
-| `FE-AUTH-001` | Build Splash/Onboarding    | `FR-002`           | `[ ]`  | P0       | `FE-CORE-002`                 | Kiểm tra token và điều hướng đúng  |
-| `FE-AUTH-002` | Build Login screen         | `FR-002`           | `[ ]`  | P0       | `FE-CORE-003`                 | Login thành công lưu token         |
-| `FE-AUTH-003` | Build Register screen      | `FR-001`           | `[ ]`  | P0       | `FE-AUTH-002`                 | Đăng ký và quay về login/main flow |
-| `FE-PROF-001` | Build Profile/Edit Profile | `FR-003`, `FR-004` | `[ ]`  | P0       | `FE-AUTH-002`, `API-USER-002` | Xem/sửa hồ sơ, chọn school/area    |
+| `FE-AUTH-001` | Build Splash/Onboarding    | `FR-002`           | `[x]`  | P0       | `FE-CORE-002`                 | Kiểm tra token và điều hướng đúng  |
+| `FE-AUTH-002` | Build Login screen         | `FR-002`           | `[x]`  | P0       | `FE-CORE-003`                 | Login thành công lưu token         |
+| `FE-AUTH-003` | Build Register screen      | `FR-001`           | `[x]`  | P0       | `FE-AUTH-002`                 | Đăng ký và quay về login/main flow |
+| `FE-PROF-001` | Build Profile/Edit Profile | `FR-003`, `FR-004` | `[x]`  | P0       | `FE-AUTH-002`, `API-USER-002` | Xem/sửa hồ sơ, chọn school/area    |
 
 ### 9.2. Listing Discovery Và Management
 
 | ID            | Task                               | Use Case                               | Status | Priority | Dependency                    | Definition of Done                             |
 | ------------- | ---------------------------------- | -------------------------------------- | ------ | -------- | ----------------------------- | ---------------------------------------------- |
-| `FE-LIST-001` | Build Home/Listings screen         | `FR-009`, `FR-010`                     | `[ ]`  | P0       | `FE-CORE-005`, `API-LIST-001` | List bài, pull-to-refresh, loading/empty/error |
-| `FE-LIST-002` | Build Search + Filter bottom sheet | `FR-010`                               | `[ ]`  | P0       | `FE-LIST-001`, `API-META-004` | Filter category/tag/school/area/type/price     |
-| `FE-LIST-003` | Build Listing Detail screen        | `FR-004`, `FR-009`, `FR-011`, `FR-015` | `[ ]`  | P0       | `FE-LIST-001`, `API-LIST-002` | Detail, owner summary, CTA theo role/status    |
-| `FE-LIST-004` | Build Create Listing form          | `FR-005`, `FR-008`                     | `[ ]`  | P0       | `FE-CORE-006`, `API-LIST-003` | Tạo bài, validate borrow price/tag/category    |
-| `FE-LIST-005` | Build Edit Listing và My Listings  | `FR-006`, `FR-008`                     | `[ ]`  | P0       | `FE-LIST-004`, `API-LIST-005` | Owner sửa/đóng/xóa mềm bài                     |
-| `FE-LIST-006` | Build Manage Images screen         | `FR-007`                               | `[ ]`  | P0       | `FE-LIST-004`, `API-IMG-002`  | Upload, cover, reorder, delete ảnh             |
+| `FE-LIST-001` | Build Home/Listings screen         | `FR-009`, `FR-010`                     | `[x]`  | P0       | `FE-CORE-005`, `API-LIST-001` | List bài, pull-to-refresh, loading/empty/error |
+| `FE-LIST-002` | Build Search + Filter bottom sheet | `FR-010`                               | `[x]`  | P0       | `FE-LIST-001`, `API-META-004` | Filter category/tag/school/area/type/price     |
+| `FE-LIST-003` | Build Listing Detail screen        | `FR-004`, `FR-009`, `FR-011`, `FR-015` | `[x]`  | P0       | `FE-LIST-001`, `API-LIST-002` | Detail, owner summary, CTA theo role/status    |
+| `FE-LIST-004` | Build Create Listing form          | `FR-005`, `FR-008`                     | `[x]`  | P0       | `FE-CORE-006`, `API-LIST-003` | Tạo bài, validate borrow price/tag/category    |
+| `FE-LIST-005` | Build Edit Listing và My Listings  | `FR-006`, `FR-008`                     | `[x]`  | P0       | `FE-LIST-004`, `API-LIST-005` | Owner sửa/đóng/xóa mềm bài                     |
+| `FE-LIST-006` | Build Manage Images screen         | `FR-007`                               | `[x]`  | P0       | `FE-LIST-004`, `API-IMG-002`  | Upload, cover, reorder, delete ảnh             |
 
 ### 9.3. Interaction, Chat, Rental
 

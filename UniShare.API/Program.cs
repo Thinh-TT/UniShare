@@ -9,6 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Database
 builder.Services.AddDatabase(builder.Configuration);
 
+// Application services
+builder.Services.AddApplicationServices();
+
 // Controllers + FluentValidation + Response Wrapper
 builder.Services.AddControllers(options =>
 {
@@ -41,6 +44,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 app.UseCors("UniShareMobile");
 app.UseAuthentication();
 app.UseAuthorization();
