@@ -115,14 +115,14 @@ Task board này bám theo:
 
 | ID             | Task                                                          | Use Case           | Status | Priority | Dependency                                                  | Definition of Done                                     |
 | -------------- | ------------------------------------------------------------- | ------------------ | ------ | -------- | ----------------------------------------------------------- | ------------------------------------------------------ |
-| `API-REQ-001`  | Implement gửi rental request                                  | `FR-015`           | `[ ]`  | P0       | `API-LIST-002`, `DB-004`                                    | Tạo request Pending, validate date/owner/status        |
-| `API-REQ-002`  | Implement list/detail rental requests                         | `FR-017`           | `[ ]`  | P0       | `API-REQ-001`                                               | User chỉ xem request liên quan                         |
-| `API-REQ-003`  | Implement accept/reject/cancel request                        | `FR-016`           | `[ ]`  | P0       | `API-REQ-002`                                               | Đổi trạng thái đúng role và rule                       |
-| `API-REQ-004`  | Implement start/complete transaction                          | `FR-017`, `FR-019` | `[ ]`  | P0       | `API-REQ-003`                                               | Chuyển trạng thái request/listing đúng                 |
-| `API-DEP-001`  | Implement xem và ghi nhận deposit                             | `FR-018`           | `[ ]`  | P1       | `API-REQ-001`                                               | Get deposit, mark paid, refund                         |
-| `API-REV-001`  | Implement tạo review sau giao dịch                            | `FR-020`           | `[ ]`  | P0       | `API-REQ-004`, `DB-006`                                     | Chỉ review khi Completed, cập nhật reputation          |
-| `API-NOTI-001` | Implement tạo notification trong các action chính             | `FR-021`           | `[ ]`  | P0       | `API-INT-001`, `API-CHAT-003`, `API-REQ-001`, `API-REV-001` | Upvote/comment/message/request/review tạo notification |
-| `API-NOTI-002` | Implement notification list, unread count, mark read/read all | `FR-021`           | `[ ]`  | P0       | `API-NOTI-001`                                              | User chỉ xem notification của mình                     |
+| `API-REQ-001`  | Implement gửi rental request                                  | `FR-015`           | `[x]`  | P0       | `API-LIST-002`, `DB-004`                                    | Tạo request Pending, validate date/owner/status        |
+| `API-REQ-002`  | Implement list/detail rental requests                         | `FR-017`           | `[x]`  | P0       | `API-REQ-001`                                               | User chỉ xem request liên quan                         |
+| `API-REQ-003`  | Implement accept/reject/cancel request                        | `FR-016`           | `[x]`  | P0       | `API-REQ-002`                                               | Đổi trạng thái đúng role và rule                       |
+| `API-REQ-004`  | Implement start/complete transaction                          | `FR-017`, `FR-019` | `[x]`  | P0       | `API-REQ-003`                                               | Chuyển trạng thái request/listing đúng                 |
+| `API-DEP-001`  | Implement xem và ghi nhận deposit                             | `FR-018`           | `[x]`  | P1       | `API-REQ-001`                                               | Get deposit, mark paid, refund                         |
+| `API-REV-001`  | Implement tạo review sau giao dịch                            | `FR-020`           | `[x]`  | P0       | `API-REQ-004`, `DB-006`                                     | Chỉ review khi Completed, cập nhật reputation          |
+| `API-NOTI-001` | Implement tạo notification trong các action chính             | `FR-021`           | `[x]`  | P0       | `API-INT-001`, `API-CHAT-003`, `API-REQ-001`, `API-REV-001` | Upvote/comment/message/request/review tạo notification |
+| `API-NOTI-002` | Implement notification list, unread count, mark read/read all | `FR-021`           | `[x]`  | P0       | `API-NOTI-001`                                              | User chỉ xem notification của mình                     |
 
 ## 7. Phase 3 - Backend Testing Và API Verification
 
@@ -220,7 +220,7 @@ Task board này bám theo:
 | ------------------------------ | ---------------------------------------------------------- | ------------------------------------------------------------------------------ |
 | `M1 - Backend Skeleton Ready`  | Backend chạy được, Swagger mở được, DB migrate được        | `SETUP-*`, `DB-*`                                                              |
 | `M2 - Core API Ready`          | Auth, user, metadata, listing API hoàn thành               | `API-AUTH-*`, `API-USER-*`, `API-META-*`, `API-LIST-*`, `API-IMG-*`            |
-| `M3 - MVP API Complete`        | Chat, rental, deposit, review, notification API hoàn thành | `API-INT-*`, `API-CHAT-*`, `API-REQ-*`, `API-DEP-*`, `API-REV-*`, `API-NOTI-*` |
+| `M3 - MVP API Complete`        | Chat, rental, deposit, review, notification API hoàn thành ✅ | `API-INT-*`, `API-CHAT-*`, `API-REQ-*`, `API-DEP-*`, `API-REV-*`, `API-NOTI-*` |
 | `M4 - Backend Verified`        | Unit/integration tests chính pass                          | `TEST-BE-*`                                                                    |
 | `M5 - Flutter MVP UI Complete` | Tất cả màn hình UI-001 đến UI-020 hoàn thành               | `FE-CORE-*`, `FE-*`                                                            |
 | `M6 - Mobile Verified`         | Widget/integration/manual tests pass                       | `TEST-FE-*`                                                                    |

@@ -25,6 +25,7 @@ public class RentalRequestConfiguration : IEntityTypeConfiguration<RentalRequest
         builder.HasIndex(e => e.RequesterId);
         builder.HasIndex(e => e.OwnerId);
         builder.HasIndex(e => e.Status);
+        builder.HasIndex(e => new { e.ListingId, e.RequesterId, e.Status });
 
         // Relationships
         builder.HasOne(e => e.Listing)

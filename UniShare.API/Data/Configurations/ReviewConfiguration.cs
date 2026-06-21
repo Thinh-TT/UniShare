@@ -19,6 +19,7 @@ public class ReviewConfiguration : IEntityTypeConfiguration<Review>
         // Indexes
         builder.HasIndex(e => e.RentalRequestId);
         builder.HasIndex(e => e.RevieweeId);
+        builder.HasIndex(e => new { e.RentalRequestId, e.ReviewerId }).IsUnique();
 
         // Relationships
         builder.HasOne(e => e.RentalRequest)
