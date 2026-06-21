@@ -48,15 +48,15 @@ Task board này bám theo:
 
 | ID       | Task                                                                                     | Use Case                     | Status | Priority | Dependency          | Definition of Done                                       |
 | -------- | ---------------------------------------------------------------------------------------- | ---------------------------- | ------ | -------- | ------------------- | -------------------------------------------------------- |
-| `DB-001` | Tạo entity và DbSet cho `Users`, `Schools`, `Areas`                                      | `FR-001`, `FR-003`, `FR-004` | `[ ]`  | P0       | `SETUP-001`         | Entity map đúng database designer                        |
-| `DB-002` | Tạo entity và DbSet cho `Categories`, `Tags`, `Listings`, `ListingImages`, `ListingTags` | `FR-005` - `FR-010`          | `[ ]`  | P0       | `DB-001`            | Quan hệ listing/category/tag/image hoạt động             |
-| `DB-003` | Tạo entity cho `Upvotes`, `Comments`                                                     | `FR-011`, `FR-012`           | `[ ]`  | P0       | `DB-002`            | Unique upvote và comment reply cùng listing được enforce |
-| `DB-004` | Tạo entity cho `RentalRequests`, `Deposits`                                              | `FR-015` - `FR-019`          | `[ ]`  | P0       | `DB-002`            | Trạng thái request/deposit map đúng enum                 |
-| `DB-005` | Tạo entity cho `Conversations`, `Messages`                                               | `FR-013`, `FR-014`           | `[ ]`  | P0       | `DB-002`            | Conversation participant và message relation đúng        |
-| `DB-006` | Tạo entity cho `Reviews`, `Notifications`                                                | `FR-020`, `FR-021`           | `[ ]`  | P0       | `DB-001`, `DB-004`  | Review/notification map đúng user/request                |
-| `DB-007` | Cấu hình EF Core Fluent API, index, unique constraint, delete behavior                   | All                          | `[ ]`  | P0       | `DB-001` - `DB-006` | Migration sinh constraint chính xác                      |
-| `DB-008` | Tạo migration đầu tiên và cập nhật database dev                                          | All                          | `[ ]`  | P0       | `DB-007`            | Database tạo được trên SQL Server                        |
-| `DB-009` | Seed dữ liệu nền: schools, areas, categories, sample tags                                | `FR-008`, `FR-010`, `FR-022` | `[ ]`  | P1       | `DB-008`            | App có dữ liệu chọn trường/khu vực/category              |
+| `DB-001` | Tạo entity và DbSet cho `Users`, `Schools`, `Areas`                                      | `FR-001`, `FR-003`, `FR-004` | `[x]`  | P0       | `SETUP-001`         | Entity map đúng database designer                        |
+| `DB-002` | Tạo entity và DbSet cho `Categories`, `Tags`, `Listings`, `ListingImages`, `ListingTags` | `FR-005` - `FR-010`          | `[x]`  | P0       | `DB-001`            | Quan hệ listing/category/tag/image hoạt động             |
+| `DB-003` | Tạo entity cho `Upvotes`, `Comments`                                                     | `FR-011`, `FR-012`           | `[x]`  | P0       | `DB-002`            | Unique upvote và comment reply cùng listing được enforce |
+| `DB-004` | Tạo entity cho `RentalRequests`, `Deposits`                                              | `FR-015` - `FR-019`          | `[x]`  | P0       | `DB-002`            | Trạng thái request/deposit map đúng enum                 |
+| `DB-005` | Tạo entity cho `Conversations`, `Messages`                                               | `FR-013`, `FR-014`           | `[x]`  | P0       | `DB-002`            | Conversation participant và message relation đúng        |
+| `DB-006` | Tạo entity cho `Reviews`, `Notifications`                                                | `FR-020`, `FR-021`           | `[x]`  | P0       | `DB-001`, `DB-004`  | Review/notification map đúng user/request                |
+| `DB-007` | Cấu hình EF Core Fluent API, index, unique constraint, delete behavior                   | All                          | `[x]`  | P0       | `DB-001` - `DB-006` | Migration sinh constraint chính xác                      |
+| `DB-008` | Tạo migration đầu tiên và cập nhật database dev                                          | All                          | `[x]`  | P0       | `DB-007`            | Database tạo được trên SQL Server                        |
+| `DB-009` | Seed dữ liệu nền: schools, areas, categories, sample tags                                | `FR-008`, `FR-010`, `FR-022` | `[x]`  | P1       | `DB-008`            | App có dữ liệu chọn trường/khu vực/category              |
 
 ## 6. Phase 2 - Backend API Core
 

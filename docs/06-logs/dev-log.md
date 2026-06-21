@@ -12,3 +12,7 @@ Ghi lại các quyết định kỹ thuật quan trọng, vấn đề phát sinh
 - Ghi ngắn gọn, tập trung vào WHY hơn là WHAT.
 
 ## 3. Entries
+
+| Ngày | Người thực hiện | Loại | Task | Mô tả |
+|------|-----------------|------|------|-------|
+| 2026-06-21 | ThinhTT + Claude Code | Decision | DB-001 → DB-009 | Hoàn thành Phase 1: 16 entities, 6 enums, Fluent API configs, migration InitialCreate, seed data. [Chi tiết](session-log/log-20260621-phase1.md) |
