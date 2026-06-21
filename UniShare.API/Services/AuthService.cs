@@ -6,6 +6,7 @@ using UniShare.API.Models;
 using UniShare.API.Models.DTOs.Auth;
 using UniShare.API.Models.DTOs.Users;
 using UniShare.API.Models.Entities;
+using UniShare.API.Models.Enums;
 using UniShare.API.Services.Interfaces;
 
 namespace UniShare.API.Services;
@@ -46,7 +47,7 @@ public class AuthService : IAuthService
             FullName = request.FullName,
             PhoneNumber = request.PhoneNumber,
             PasswordHash = _passwordHasher.Hash(request.Password),
-            Role = "User",
+            Role = Roles.User,
             IsActive = true,
             ReputationScore = 100.00m
         };

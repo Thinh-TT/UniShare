@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using UniShare.API.Extensions;
 using UniShare.API.Filters;
 using UniShare.API.Middleware;
+using UniShare.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,5 +50,13 @@ app.UseCors("UniShareMobile");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
+// Seed admin user in development
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    var seeder = scope.ServiceProvider.GetRequiredService<AdminSeedService>();
+    await seeder.SeedAdminIfNotExistsAsync("admin@unishare.edu.vn", "Admin@123456!");
+}
 
 app.Run();

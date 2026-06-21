@@ -130,7 +130,7 @@ public static class ServiceCollectionExtensions
         services.AddAuthorization(options =>
         {
             options.AddPolicy("RequireAdmin", policy =>
-                policy.RequireRole("Admin"));
+                policy.RequireRole(UniShare.API.Models.Enums.Roles.Admin));
             options.AddPolicy("RequireAuthenticated", policy =>
                 policy.RequireAuthenticatedUser());
         });
@@ -171,6 +171,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IMetadataService, MetadataService>();
         services.AddScoped<IListingService, ListingService>();
         services.AddScoped<IListingImageService, ListingImageService>();
+        services.AddScoped<IAdminService, AdminService>();
+        services.AddScoped<AdminSeedService>();
 
         return services;
     }

@@ -64,35 +64,35 @@ Task board này bám theo:
 
 | ID             | Task                                                             | Use Case           | Status | Priority | Dependency               | Definition of Done                                               |
 | -------------- | ---------------------------------------------------------------- | ------------------ | ------ | -------- | ------------------------ | ---------------------------------------------------------------- |
-| `API-AUTH-001` | Implement `POST /auth/register`                                  | `FR-001`           | `[ ]`  | P0       | `DB-001`, `SETUP-006`    | Tạo user, hash password, điểm uy tín mặc định                    |
-| `API-AUTH-002` | Implement `POST /auth/login`                                     | `FR-002`           | `[ ]`  | P0       | `API-AUTH-001`           | Trả access token, refresh token và user summary                  |
-| `API-AUTH-003` | Implement `POST /auth/refresh-token`                             | `FR-002`           | `[ ]`  | P1       | `API-AUTH-002`           | Refresh token hợp lệ tạo access token mới                        |
-| `API-AUTH-004` | Implement `POST /auth/logout`                                    | `FR-002`           | `[ ]`  | P1       | `API-AUTH-002`           | Logout vô hiệu hóa refresh token hoặc hướng dẫn client xóa token |
-| `API-USER-001` | Implement `GET /users/me`                                        | `FR-003`           | `[ ]`  | P0       | `API-AUTH-002`           | User xem được hồ sơ của mình                                     |
-| `API-USER-002` | Implement `PUT /users/me`                                        | `FR-003`           | `[ ]`  | P0       | `API-USER-001`, `DB-009` | Cập nhật profile, validate school/area active                    |
-| `API-USER-003` | Implement `GET /users/{userId}` và `GET /users/{userId}/reviews` | `FR-004`, `FR-020` | `[ ]`  | P1       | `DB-006`                 | Trả hồ sơ công khai và danh sách review                          |
+| `API-AUTH-001` | Implement `POST /auth/register`                                  | `FR-001`           | `[x]`  | P0       | `DB-001`, `SETUP-006`    | Tạo user, hash password, điểm uy tín mặc định                    |
+| `API-AUTH-002` | Implement `POST /auth/login`                                     | `FR-002`           | `[x]`  | P0       | `API-AUTH-001`           | Trả access token, refresh token và user summary                  |
+| `API-AUTH-003` | Implement `POST /auth/refresh-token`                             | `FR-002`           | `[x]`  | P1       | `API-AUTH-002`           | Refresh token hợp lệ tạo access token mới                        |
+| `API-AUTH-004` | Implement `POST /auth/logout`                                    | `FR-002`           | `[x]`  | P1       | `API-AUTH-002`           | Logout vô hiệu hóa refresh token hoặc hướng dẫn client xóa token |
+| `API-USER-001` | Implement `GET /users/me`                                        | `FR-003`           | `[x]`  | P0       | `API-AUTH-002`           | User xem được hồ sơ của mình                                     |
+| `API-USER-002` | Implement `PUT /users/me`                                        | `FR-003`           | `[x]`  | P0       | `API-USER-001`, `DB-009` | Cập nhật profile, validate school/area active                    |
+| `API-USER-003` | Implement `GET /users/{userId}` và `GET /users/{userId}/reviews` | `FR-004`, `FR-020` | `[x]`  | P1       | `DB-006`                 | Trả hồ sơ công khai và danh sách review                          |
 
 ### 6.2. Metadata Và Admin Cơ Bản
 
 | ID             | Task                                                  | Use Case           | Status | Priority | Dependency            | Definition of Done                       |
 | -------------- | ----------------------------------------------------- | ------------------ | ------ | -------- | --------------------- | ---------------------------------------- |
-| `API-META-001` | Implement `GET /categories`                           | `FR-008`, `FR-010` | `[ ]`  | P0       | `DB-009`              | Trả category active                      |
-| `API-META-002` | Implement `GET /tags` với keyword/paging              | `FR-008`, `FR-010` | `[ ]`  | P0       | `DB-009`              | Tìm tag theo keyword                     |
-| `API-META-003` | Implement `GET /schools`                              | `FR-003`, `FR-008` | `[ ]`  | P0       | `DB-009`              | Trả school active                        |
-| `API-META-004` | Implement `GET /areas`                                | `FR-003`, `FR-008` | `[ ]`  | P0       | `DB-009`              | Trả area active, filter theo city nếu có |
-| `API-META-005` | Implement admin APIs quản lý categories/schools/areas | `FR-022`           | `[ ]`  | P2       | `SETUP-006`, `DB-009` | Admin tạo/sửa/deactivate dữ liệu nền     |
+| `API-META-001` | Implement `GET /categories`                           | `FR-008`, `FR-010` | `[x]`  | P0       | `DB-009`              | Trả category active                      |
+| `API-META-002` | Implement `GET /tags` với keyword/paging              | `FR-008`, `FR-010` | `[x]`  | P0       | `DB-009`              | Tìm tag theo keyword                     |
+| `API-META-003` | Implement `GET /schools`                              | `FR-003`, `FR-008` | `[x]`  | P0       | `DB-009`              | Trả school active                        |
+| `API-META-004` | Implement `GET /areas`                                | `FR-003`, `FR-008` | `[x]`  | P0       | `DB-009`              | Trả area active, filter theo city nếu có |
+| `API-META-005` | Implement admin APIs quản lý categories/schools/areas | `FR-022`           | `[x]`  | P2       | `SETUP-006`, `DB-009` | Admin tạo/sửa/deactivate dữ liệu nền     |
 
 ### 6.3. Listings Và Images
 
 | ID             | Task                                                       | Use Case           | Status | Priority | Dependency               | Definition of Done                                         |
 | -------------- | ---------------------------------------------------------- | ------------------ | ------ | -------- | ------------------------ | ---------------------------------------------------------- |
-| `API-LIST-001` | Implement `GET /listings` với paging, search, filter, sort | `FR-009`, `FR-010` | `[ ]`  | P0       | `DB-002`, `API-META-001` | Chỉ trả bài `Available`, chưa xóa                          |
-| `API-LIST-002` | Implement `GET /listings/{listingId}`                      | `FR-009`           | `[ ]`  | P0       | `API-LIST-001`           | Trả detail gồm owner, images, tags, category, school, area |
-| `API-LIST-003` | Implement `POST /listings`                                 | `FR-005`, `FR-008` | `[ ]`  | P0       | `API-AUTH-002`, `DB-002` | Tạo bài đúng validation, normalize tags                    |
-| `API-LIST-004` | Implement `PUT /listings/{listingId}`                      | `FR-006`, `FR-008` | `[ ]`  | P0       | `API-LIST-003`           | Chỉ owner được cập nhật                                    |
-| `API-LIST-005` | Implement close/delete/my listings endpoints               | `FR-006`           | `[ ]`  | P0       | `API-LIST-004`           | Đóng bài, xóa mềm, list bài của tôi                        |
-| `API-IMG-001`  | Implement upload ảnh bài đăng                              | `FR-007`           | `[ ]`  | P0       | `API-LIST-003`           | Upload multipart, giới hạn định dạng/kích thước            |
-| `API-IMG-002`  | Implement đổi cover, sắp xếp và xóa ảnh                    | `FR-007`           | `[ ]`  | P1       | `API-IMG-001`            | Mỗi listing chỉ có 1 cover, tối đa 10 ảnh                  |
+| `API-LIST-001` | Implement `GET /listings` với paging, search, filter, sort | `FR-009`, `FR-010` | `[x]`  | P0       | `DB-002`, `API-META-001` | Chỉ trả bài `Available`, chưa xóa                          |
+| `API-LIST-002` | Implement `GET /listings/{listingId}`                      | `FR-009`           | `[x]`  | P0       | `API-LIST-001`           | Trả detail gồm owner, images, tags, category, school, area |
+| `API-LIST-003` | Implement `POST /listings`                                 | `FR-005`, `FR-008` | `[x]`  | P0       | `API-AUTH-002`, `DB-002` | Tạo bài đúng validation, normalize tags                    |
+| `API-LIST-004` | Implement `PUT /listings/{listingId}`                      | `FR-006`, `FR-008` | `[x]`  | P0       | `API-LIST-003`           | Chỉ owner được cập nhật                                    |
+| `API-LIST-005` | Implement close/delete/my listings endpoints               | `FR-006`           | `[x]`  | P0       | `API-LIST-004`           | Đóng bài, xóa mềm, list bài của tôi                        |
+| `API-IMG-001`  | Implement upload ảnh bài đăng                              | `FR-007`           | `[x]`  | P0       | `API-LIST-003`           | Upload multipart, giới hạn định dạng/kích thước            |
+| `API-IMG-002`  | Implement đổi cover, sắp xếp và xóa ảnh                    | `FR-007`           | `[x]`  | P1       | `API-IMG-001`            | Mỗi listing chỉ có 1 cover, tối đa 10 ảnh                  |
 
 ### 6.4. Tương Tác Cộng Đồng
 
@@ -157,21 +157,21 @@ Task board này bám theo:
 
 | ID            | Task                       | Use Case           | Status | Priority | Dependency                    | Definition of Done                 |
 | ------------- | -------------------------- | ------------------ | ------ | -------- | ----------------------------- | ---------------------------------- |
-| `FE-AUTH-001` | Build Splash/Onboarding    | `FR-002`           | `[x]`  | P0       | `FE-CORE-002`                 | Kiểm tra token và điều hướng đúng  |
-| `FE-AUTH-002` | Build Login screen         | `FR-002`           | `[x]`  | P0       | `FE-CORE-003`                 | Login thành công lưu token         |
-| `FE-AUTH-003` | Build Register screen      | `FR-001`           | `[x]`  | P0       | `FE-AUTH-002`                 | Đăng ký và quay về login/main flow |
-| `FE-PROF-001` | Build Profile/Edit Profile | `FR-003`, `FR-004` | `[x]`  | P0       | `FE-AUTH-002`, `API-USER-002` | Xem/sửa hồ sơ, chọn school/area    |
+| `FE-AUTH-001` | Build Splash/Onboarding    | `FR-002`           | `[ ]`  | P0       | `FE-CORE-002`                 | Kiểm tra token và điều hướng đúng  |
+| `FE-AUTH-002` | Build Login screen         | `FR-002`           | `[ ]`  | P0       | `FE-CORE-003`                 | Login thành công lưu token         |
+| `FE-AUTH-003` | Build Register screen      | `FR-001`           | `[ ]`  | P0       | `FE-AUTH-002`                 | Đăng ký và quay về login/main flow |
+| `FE-PROF-001` | Build Profile/Edit Profile | `FR-003`, `FR-004` | `[ ]`  | P0       | `FE-AUTH-002`, `API-USER-002` | Xem/sửa hồ sơ, chọn school/area    |
 
 ### 9.2. Listing Discovery Và Management
 
 | ID            | Task                               | Use Case                               | Status | Priority | Dependency                    | Definition of Done                             |
 | ------------- | ---------------------------------- | -------------------------------------- | ------ | -------- | ----------------------------- | ---------------------------------------------- |
-| `FE-LIST-001` | Build Home/Listings screen         | `FR-009`, `FR-010`                     | `[x]`  | P0       | `FE-CORE-005`, `API-LIST-001` | List bài, pull-to-refresh, loading/empty/error |
-| `FE-LIST-002` | Build Search + Filter bottom sheet | `FR-010`                               | `[x]`  | P0       | `FE-LIST-001`, `API-META-004` | Filter category/tag/school/area/type/price     |
-| `FE-LIST-003` | Build Listing Detail screen        | `FR-004`, `FR-009`, `FR-011`, `FR-015` | `[x]`  | P0       | `FE-LIST-001`, `API-LIST-002` | Detail, owner summary, CTA theo role/status    |
-| `FE-LIST-004` | Build Create Listing form          | `FR-005`, `FR-008`                     | `[x]`  | P0       | `FE-CORE-006`, `API-LIST-003` | Tạo bài, validate borrow price/tag/category    |
-| `FE-LIST-005` | Build Edit Listing và My Listings  | `FR-006`, `FR-008`                     | `[x]`  | P0       | `FE-LIST-004`, `API-LIST-005` | Owner sửa/đóng/xóa mềm bài                     |
-| `FE-LIST-006` | Build Manage Images screen         | `FR-007`                               | `[x]`  | P0       | `FE-LIST-004`, `API-IMG-002`  | Upload, cover, reorder, delete ảnh             |
+| `FE-LIST-001` | Build Home/Listings screen         | `FR-009`, `FR-010`                     | `[ ]`  | P0       | `FE-CORE-005`, `API-LIST-001` | List bài, pull-to-refresh, loading/empty/error |
+| `FE-LIST-002` | Build Search + Filter bottom sheet | `FR-010`                               | `[ ]`  | P0       | `FE-LIST-001`, `API-META-004` | Filter category/tag/school/area/type/price     |
+| `FE-LIST-003` | Build Listing Detail screen        | `FR-004`, `FR-009`, `FR-011`, `FR-015` | `[ ]`  | P0       | `FE-LIST-001`, `API-LIST-002` | Detail, owner summary, CTA theo role/status    |
+| `FE-LIST-004` | Build Create Listing form          | `FR-005`, `FR-008`                     | `[ ]`  | P0       | `FE-CORE-006`, `API-LIST-003` | Tạo bài, validate borrow price/tag/category    |
+| `FE-LIST-005` | Build Edit Listing và My Listings  | `FR-006`, `FR-008`                     | `[ ]`  | P0       | `FE-LIST-004`, `API-LIST-005` | Owner sửa/đóng/xóa mềm bài                     |
+| `FE-LIST-006` | Build Manage Images screen         | `FR-007`                               | `[ ]`  | P0       | `FE-LIST-004`, `API-IMG-002`  | Upload, cover, reorder, delete ảnh             |
 
 ### 9.3. Interaction, Chat, Rental
 
