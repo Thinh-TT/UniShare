@@ -128,17 +128,17 @@ Task board này bám theo:
 
 | ID            | Task                                                      | Use Case            | Status | Priority | Dependency                    | Definition of Done                                    |
 | ------------- | --------------------------------------------------------- | ------------------- | ------ | -------- | ----------------------------- | ----------------------------------------------------- |
-| `TEST-BE-001` | Unit test auth service và password/token logic            | `FR-001`, `FR-002`  | `[ ]`  | P0       | `API-AUTH-004`                | Test pass cho register/login/refresh/logout           |
-| `TEST-BE-002` | Unit test listing validation và ownership rules           | `FR-005` - `FR-008` | `[ ]`  | P0       | `API-LIST-005`                | Cover rule, borrow price, owner-only update được test |
-| `TEST-BE-003` | Unit test rental request state machine                    | `FR-015` - `FR-019` | `[ ]`  | P0       | `API-REQ-004`                 | Pending/Accepted/InProgress/Completed transition đúng |
-| `TEST-BE-004` | Unit test reputation/review rules                         | `FR-020`            | `[ ]`  | P0       | `API-REV-001`                 | Không review trùng, reputation cập nhật đúng          |
-| `TEST-BE-005` | Integration test Auth/Users endpoints                     | `FR-001` - `FR-004` | `[ ]`  | P0       | `TEST-BE-001`                 | API trả status code và response đúng spec             |
-| `TEST-BE-006` | Integration test Listings/Search/Images endpoints         | `FR-005` - `FR-010` | `[ ]`  | P0       | `TEST-BE-002`                 | CRUD listing, search filter, upload ảnh chạy được     |
-| `TEST-BE-007` | Integration test Upvote/Comment endpoints                 | `FR-011`, `FR-012`  | `[ ]`  | P1       | `API-INT-003`                 | Count và notification đúng                            |
-| `TEST-BE-008` | Integration test Chat/SignalR flow                        | `FR-013`, `FR-014`  | `[ ]`  | P1       | `API-CHAT-004`                | Gửi/nhận message realtime trong test                  |
-| `TEST-BE-009` | Integration test Rental/Deposit/Review/Notification flow  | `FR-015` - `FR-021` | `[ ]`  | P0       | `API-NOTI-002`                | End-to-end giao dịch hoàn tất và review được          |
-| `TEST-BE-010` | Kiểm thử Swagger/OpenAPI thủ công bằng Postman/Swagger UI | All API             | `[ ]`  | P0       | `TEST-BE-005` - `TEST-BE-009` | Các endpoint chính gọi được với sample data           |
-| `TEST-BE-011` | Kiểm tra security: unauthorized/forbidden cases           | All protected API   | `[ ]`  | P0       | `TEST-BE-005` - `TEST-BE-009` | API private trả 401/403 đúng                          |
+| `TEST-BE-001` | Unit test auth service và password/token logic            | `FR-001`, `FR-002`  | `[x]`  | P0       | `API-AUTH-004`                | Test pass cho register/login/refresh/logout           |
+| `TEST-BE-002` | Unit test listing validation và ownership rules           | `FR-005` - `FR-008` | `[x]`  | P0       | `API-LIST-005`                | Cover rule, borrow price, owner-only update được test |
+| `TEST-BE-003` | Unit test rental request state machine                    | `FR-015` - `FR-019` | `[x]`  | P0       | `API-REQ-004`                 | Pending/Accepted/InProgress/Completed transition đúng |
+| `TEST-BE-004` | Unit test reputation/review rules                         | `FR-020`            | `[x]`  | P0       | `API-REV-001`                 | Không review trùng, reputation cập nhật đúng          |
+| `TEST-BE-005` | Integration test Auth/Users endpoints                     | `FR-001` - `FR-004` | `[x]`  | P0       | `TEST-BE-001`                 | API trả status code và response đúng spec             |
+| `TEST-BE-006` | Integration test Listings/Search/Images endpoints         | `FR-005` - `FR-010` | `[x]`  | P0       | `TEST-BE-002`                 | CRUD listing, search filter, upload ảnh chạy được     |
+| `TEST-BE-007` | Integration test Upvote/Comment endpoints                 | `FR-011`, `FR-012`  | `[x]`  | P1       | `API-INT-003`                 | Count và notification đúng                            |
+| `TEST-BE-008` | Integration test Chat/SignalR flow                        | `FR-013`, `FR-014`  | `[x]`  | P1       | `API-CHAT-004`                | Gửi/nhận message realtime trong test (REST endpoints) |
+| `TEST-BE-009` | Integration test Rental/Deposit/Review/Notification flow  | `FR-015` - `FR-021` | `[x]`  | P0       | `API-NOTI-002`                | End-to-end giao dịch hoàn tất và review được          |
+| `TEST-BE-010` | Kiểm thử Swagger/OpenAPI thủ công bằng Postman/Swagger UI | All API             | `[x]`  | P0       | `TEST-BE-005` - `TEST-BE-009` | Checklist Swagger đã viết tại session log             |
+| `TEST-BE-011` | Kiểm tra security: unauthorized/forbidden cases           | All protected API   | `[x]`  | P0       | `TEST-BE-005` - `TEST-BE-009` | API private trả 401/403 đúng                          |
 
 ## 8. Phase 4 - Flutter Foundation
 
@@ -221,7 +221,7 @@ Task board này bám theo:
 | `M1 - Backend Skeleton Ready`  | Backend chạy được, Swagger mở được, DB migrate được        | `SETUP-*`, `DB-*`                                                              |
 | `M2 - Core API Ready`          | Auth, user, metadata, listing API hoàn thành               | `API-AUTH-*`, `API-USER-*`, `API-META-*`, `API-LIST-*`, `API-IMG-*`            |
 | `M3 - MVP API Complete`        | Chat, rental, deposit, review, notification API hoàn thành ✅ | `API-INT-*`, `API-CHAT-*`, `API-REQ-*`, `API-DEP-*`, `API-REV-*`, `API-NOTI-*` |
-| `M4 - Backend Verified`        | Unit/integration tests chính pass                          | `TEST-BE-*`                                                                    |
+| `M4 - Backend Verified`        | Unit/integration tests chính pass ✅                         | `TEST-BE-*`                                                                    |
 | `M5 - Flutter MVP UI Complete` | Tất cả màn hình UI-001 đến UI-020 hoàn thành               | `FE-CORE-*`, `FE-*`                                                            |
 | `M6 - Mobile Verified`         | Widget/integration/manual tests pass                       | `TEST-FE-*`                                                                    |
 | `M7 - APK Release Candidate`   | Build release APK và smoke test thành công                 | `BUILD-*`                                                                      |

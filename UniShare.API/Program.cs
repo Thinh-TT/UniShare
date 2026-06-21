@@ -63,3 +63,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.Run();
+
+// Expose Program for WebApplicationFactory<T> in integration tests
+public partial class Program { }
