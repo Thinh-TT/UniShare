@@ -106,10 +106,10 @@ Task board này bám theo:
 
 | ID             | Task                                       | Use Case | Status | Priority | Dependency               | Definition of Done                                    |
 | -------------- | ------------------------------------------ | -------- | ------ | -------- | ------------------------ | ----------------------------------------------------- |
-| `API-CHAT-001` | Implement tạo/mở conversation theo listing | `FR-013` | `[ ]`  | P0       | `API-LIST-002`, `DB-005` | Một conversation cho mỗi listing-owner-requester      |
-| `API-CHAT-002` | Implement list/detail conversation         | `FR-013` | `[ ]`  | P0       | `API-CHAT-001`           | Chỉ participant xem được                              |
-| `API-CHAT-003` | Implement message HTTP APIs                | `FR-014` | `[ ]`  | P0       | `API-CHAT-002`           | Load/gửi/mark read messages                           |
-| `API-CHAT-004` | Implement SignalR `/hubs/chat`             | `FR-014` | `[ ]`  | P0       | `API-CHAT-003`           | Join group, SendMessage, MessageReceived, MessageRead |
+| `API-CHAT-001` | Implement tạo/mở conversation theo listing | `FR-013` | `[x]`  | P0       | `API-LIST-002`, `DB-005` | Một conversation cho mỗi listing-owner-requester      |
+| `API-CHAT-002` | Implement list/detail conversation         | `FR-013` | `[x]`  | P0       | `API-CHAT-001`           | Chỉ participant xem được                              |
+| `API-CHAT-003` | Implement message HTTP APIs                | `FR-014` | `[x]`  | P0       | `API-CHAT-002`           | Load/gửi/mark read messages                           |
+| `API-CHAT-004` | Implement SignalR `/hubs/chat`             | `FR-014` | `[x]`  | P0       | `API-CHAT-003`           | Join group, SendMessage, MessageReceived, MessageRead |
 
 ### 6.6. Rental, Deposit, Review, Notification
 

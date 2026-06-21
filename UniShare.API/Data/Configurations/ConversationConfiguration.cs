@@ -18,6 +18,7 @@ public class ConversationConfiguration : IEntityTypeConfiguration<Conversation>
         builder.HasIndex(e => e.OwnerId);
         builder.HasIndex(e => e.RequesterId);
         builder.HasIndex(e => e.ListingId);
+        builder.HasIndex(e => new { e.ListingId, e.OwnerId, e.RequesterId }).IsUnique();
 
         // Relationships
         builder.HasOne(e => e.Listing)

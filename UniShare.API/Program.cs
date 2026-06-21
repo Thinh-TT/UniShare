@@ -2,6 +2,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using UniShare.API.Extensions;
 using UniShare.API.Filters;
+using UniShare.API.Hubs;
 using UniShare.API.Middleware;
 using UniShare.API.Services;
 
@@ -50,6 +51,7 @@ app.UseCors("UniShareMobile");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.MapHub<ChatHub>("/hubs/chat");
 
 // Seed admin user in development
 if (app.Environment.IsDevelopment())
