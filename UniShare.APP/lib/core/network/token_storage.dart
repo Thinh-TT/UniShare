@@ -9,29 +9,59 @@ class TokenStorage {
 
   TokenStorage()
       : _storage = const FlutterSecureStorage(
-          aOptions: AndroidOptions(encryptedSharedPreferences: true),
+          // NOTE: encryptedSharedPreferences: true can hang on Samsung devices
+          // due to Knox/TIMA KeyStore issues. Use default implementation instead.
+          aOptions: AndroidOptions(
+            encryptedSharedPreferences: false,
+            sharedPreferencesName: 'unishare_prefs',
+          ),
         );
 
   Future<void> saveTokens({
     required String accessToken,
     required String refreshToken,
   }) async {
-    await Future.wait([
-      _storage.write(key: _accessTokenKey, value: accessToken),
-      _storage.write(key: _refreshTokenKey, value: refreshToken),
-    ]);
+    try {
+      await Future.wait([
+        _storage.write(key: _accessTokenKey, value: accessToken),
+        _storage.write(key: _refreshTokenKey, value: refreshToken),
+      ]).timeout(const Duration(seconds: 5));
+    } catch (_) {
+      // Storage write failed or timed out (e.g. KeyStore unavailable).
+      // Tokens won't be persisted but the caller can still proceed.
+    }
   }
 
   Future<String?> getAccessToken() async {
-    return _storage.read(key: _accessTokenKey);
+    try {
+      return await _storage
+          .read(key: _accessTokenKey)
+          .timeout(const Duration(seconds: 5));
+    } catch (_) {
+      // Storage read failed or timed out (e.g. KeyStore unavailable,
+      // web IndexedDB blocked, platform channel hung).
+      // Treat as no token — caller should proceed to login.
+      return null;
+    }
   }
 
   Future<String?> getRefreshToken() async {
-    return _storage.read(key: _refreshTokenKey);
+    try {
+      return await _storage
+          .read(key: _refreshTokenKey)
+          .timeout(const Duration(seconds: 5));
+    } catch (_) {
+      // Storage read failed or timed out — treat as no token.
+      return null;
+    }
   }
 
   Future<void> clearTokens() async {
-    await _storage.deleteAll();
+    try {
+      await _storage.deleteAll();
+    } catch (_) {
+      // Best-effort: if delete fails, tokens remain in storage.
+    }
   }
 
   Future<bool> hasTokens() async {

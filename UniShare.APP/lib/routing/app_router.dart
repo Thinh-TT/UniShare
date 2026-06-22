@@ -27,13 +27,18 @@ import 'main_shell.dart';
 
 /// GoRouter configuration for UniShare.
 ///
-/// Uses a ReadProviderScope to access Riverpod providers during redirect.
+/// Uses [ref.read] inside the redirect callback (NOT [ref.watch]) so the
+/// router is created once and never rebuilt.  This avoids race conditions
+/// where a navigation triggered from the splash screen lands on a stale
+/// router instance that was just replaced.
 final routerProvider = Provider<GoRouter>((ref) {
-  final authState = ref.watch(authProvider);
-
   return GoRouter(
     initialLocation: '/',
     redirect: (context, state) {
+      // Read current auth state inside the redirect so we always see the
+      // latest value without rebuilding the entire router.
+      final authState = ref.read(authProvider);
+
       final isSplash = state.matchedLocation == '/';
       final isAuthRoute = state.matchedLocation == '/login' ||
           state.matchedLocation == '/register';

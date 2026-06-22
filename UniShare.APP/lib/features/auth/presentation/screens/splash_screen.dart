@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -14,37 +16,71 @@ class SplashScreen extends ConsumerStatefulWidget {
 
 class _SplashScreenState extends ConsumerState<SplashScreen> {
   bool _hasChecked = false;
+  bool _hasNavigated = false;
+  Timer? _fallbackTimer;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (!_hasChecked) {
       _hasChecked = true;
-      Future.microtask(() => _checkAuth());
+      // Run after the first frame so GoRouter is ready.
+      WidgetsBinding.instance.addPostFrameCallback((_) => _checkAuth());
     }
   }
 
+  @override
+  void dispose() {
+    _fallbackTimer?.cancel();
+    super.dispose();
+  }
+
+  /// Safely navigate to [route], ensuring we only navigate once.
+  void _navigate(String route) {
+    if (_hasNavigated || !mounted) return;
+    _hasNavigated = true;
+    _fallbackTimer?.cancel();
+    context.go(route);
+  }
+
+  /// Attempt to restore a previous session, then navigate accordingly.
+  ///
+  /// Uses a hard [Timer] fallback (5 seconds) so the user is never stuck on
+  /// this screen — even if [TokenStorage] or the network hangs.
   Future<void> _checkAuth() async {
-    await ref.read(authProvider.notifier).tryAutoLogin();
+    // Hard fallback: if auth check takes > 5 seconds, go to login.
+    _fallbackTimer = Timer(const Duration(seconds: 5), () {
+      _navigate('/login');
+    });
+
+    try {
+      await ref.read(authProvider.notifier).tryAutoLogin();
+    } catch (_) {
+      // [tryAutoLogin] is now defensive and always transitions state,
+      // but a synchronous throw (e.g. from Riverpod setup) is still possible.
+      _navigate('/login');
+      return;
+    }
+
+    // Auth check completed — read the final state and navigate.
+    if (!mounted) return;
+    final authState = ref.read(authProvider);
+    if (authState is AuthAuthenticated) {
+      _navigate('/home');
+    } else {
+      _navigate('/login');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
 
-    // Listen for auth state changes and redirect
-    ref.listen<AuthState>(authProvider, (previous, next) {
-      if (next is AuthAuthenticated) {
-        context.go('/home');
-      } else if (next is AuthUnauthenticated) {
-        context.go('/login');
-      }
-    });
-
-    // Determine the message to show below the spinner
+    // Determine the message to show below the spinner.
     String message;
     if (authState is AuthInitial) {
-      message = 'Chào mừng bạn đến với UniShare!\nĐăng nhập để bắt đầu chia sẻ đồ dùng sinh viên.';
+      message =
+          'Chào mừng bạn đến với UniShare!\nĐăng nhập để bắt đầu chia sẻ đồ dùng sinh viên.';
     } else {
       message = 'Đang kiểm tra phiên...';
     }

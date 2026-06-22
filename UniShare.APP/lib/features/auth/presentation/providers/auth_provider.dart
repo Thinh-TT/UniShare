@@ -45,20 +45,28 @@ class AuthNotifier extends StateNotifier<AuthState> {
   AuthNotifier(this._authRepository, this._tokenStorage) : super(AuthInitial());
 
   /// Check for existing session on app start.
+  ///
+  /// ALWAYS transitions state out of [AuthLoading], even on error.
+  /// This ensures the splash screen never hangs indefinitely.
   Future<void> tryAutoLogin() async {
     state = AuthLoading();
-    final user = await _authRepository.tryAutoLogin();
-    if (user != null) {
-      final accessToken =
-          await _tokenStorage.getAccessToken() ?? '';
-      final refreshToken =
-          await _tokenStorage.getRefreshToken() ?? '';
-      state = AuthAuthenticated(
-        accessToken: accessToken,
-        refreshToken: refreshToken,
-        user: user,
-      );
-    } else {
+    try {
+      final user = await _authRepository.tryAutoLogin();
+      if (user != null) {
+        final accessToken =
+            await _tokenStorage.getAccessToken() ?? '';
+        final refreshToken =
+            await _tokenStorage.getRefreshToken() ?? '';
+        state = AuthAuthenticated(
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+          user: user,
+        );
+      } else {
+        state = AuthUnauthenticated();
+      }
+    } catch (_) {
+      // Storage error, network error, etc. — force unauthenticated.
       state = AuthUnauthenticated();
     }
   }

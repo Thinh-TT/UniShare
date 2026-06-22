@@ -50,7 +50,19 @@ class AuthRepository {
 
   /// Try to restore session from stored tokens.
   /// Returns [UserProfileDto] if successful, null if no valid session.
+  ///
+  /// Has a hard 4-second timeout so the splash screen never hangs.
   Future<UserProfileDto?> tryAutoLogin() async {
+    try {
+      return await _doTryAutoLogin().timeout(const Duration(seconds: 4));
+    } catch (_) {
+      // Timeout or any other error — clear stale tokens and proceed to login.
+      await _clearTokensSafely();
+      return null;
+    }
+  }
+
+  Future<UserProfileDto?> _doTryAutoLogin() async {
     final refreshToken = await _tokenStorage.getRefreshToken();
     if (refreshToken == null || refreshToken.isEmpty) return null;
 
@@ -66,6 +78,14 @@ class AuthRepository {
     } catch (_) {
       await _tokenStorage.clearTokens();
       return null;
+    }
+  }
+
+  Future<void> _clearTokensSafely() async {
+    try {
+      await _tokenStorage.clearTokens();
+    } catch (_) {
+      // Best-effort
     }
   }
 
