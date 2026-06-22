@@ -84,16 +84,21 @@ class _ListingDetailScreenState extends ConsumerState<ListingDetailScreen> {
     context.push('/users/$userId');
   }
 
-  void _navigateToRentalRequest() {
+  void _navigateToRentalRequest(ListingDetailDto listing) {
     final authState = ref.read(authProvider);
     if (authState is! AuthAuthenticated) {
       _showLoginRequired();
       return;
     }
-    // Navigate to rental request form (Phase 5.3)
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-          content: Text('Chức năng sẽ có trong bản cập nhật tiếp theo')),
+    final isBorrow = listing.listingType == ListingType.borrow;
+    context.push(
+      '/home/listings/${widget.listingId}/request',
+      extra: {
+        'listingTitle': listing.title,
+        'listingPricePerDay': listing.pricePerDay,
+        'listingDepositAmount': listing.depositAmount,
+        'listingType': isBorrow ? 'borrow' : 'rent',
+      },
     );
   }
 
@@ -662,7 +667,7 @@ class _ListingDetailScreenState extends ConsumerState<ListingDetailScreen> {
                             child: ElevatedButton(
                               onPressed: isOwner || !isAvailable
                                   ? null
-                                  : _navigateToRentalRequest,
+                                  : () => _navigateToRentalRequest(listing),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.green,
                                 foregroundColor: AppColors.white,

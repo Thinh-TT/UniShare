@@ -19,6 +19,7 @@ DepositDto _$DepositDtoFromJson(Map<String, dynamic> json) => DepositDto(
   refundedAt: json['refundedAt'] == null
       ? null
       : DateTime.parse(json['refundedAt'] as String),
+  createdAt: DateTime.parse(json['createdAt'] as String),
 );
 
 Map<String, dynamic> _$DepositDtoToJson(DepositDto instance) =>
@@ -31,6 +32,7 @@ Map<String, dynamic> _$DepositDtoToJson(DepositDto instance) =>
       'providerTransactionId': instance.providerTransactionId,
       'paidAt': instance.paidAt?.toIso8601String(),
       'refundedAt': instance.refundedAt?.toIso8601String(),
+      'createdAt': instance.createdAt.toIso8601String(),
     };
 
 const _$DepositStatusEnumMap = {

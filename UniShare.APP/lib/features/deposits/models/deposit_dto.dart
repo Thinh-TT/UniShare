@@ -13,6 +13,7 @@ class DepositDto {
   final String? providerTransactionId;
   final DateTime? paidAt;
   final DateTime? refundedAt;
+  final DateTime createdAt;
 
   const DepositDto({
     required this.id,
@@ -23,6 +24,7 @@ class DepositDto {
     this.providerTransactionId,
     this.paidAt,
     this.refundedAt,
+    required this.createdAt,
   });
 
   factory DepositDto.fromJson(Map<String, dynamic> json) =>

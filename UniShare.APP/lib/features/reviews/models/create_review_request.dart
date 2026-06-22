@@ -2,14 +2,16 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'create_review_request.g.dart';
 
+/// Request body for creating a review.
+///
+/// The backend infers the reviewee from the rental request context,
+/// so only rating and optional comment are needed.
 @JsonSerializable()
 class CreateReviewRequest {
-  final String revieweeId;
   final int rating;
   final String? comment;
 
   const CreateReviewRequest({
-    required this.revieweeId,
     required this.rating,
     this.comment,
   });

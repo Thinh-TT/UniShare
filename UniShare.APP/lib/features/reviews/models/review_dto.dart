@@ -1,14 +1,18 @@
 import 'package:json_annotation/json_annotation.dart';
-import '../../users/models/user_summary_dto.dart';
 
 part 'review_dto.g.dart';
 
+/// Review DTO matching backend flat field shape.
+///
+/// Uses flat fields (reviewerId, reviewerName, etc.) instead of nested
+/// UserSummaryDto objects to match the backend response.
 @JsonSerializable()
 class ReviewDto {
   final String id;
   final String rentalRequestId;
-  final UserSummaryDto? reviewer;
-  final UserSummaryDto? reviewee;
+  final String reviewerId;
+  final String reviewerName;
+  final String? reviewerAvatarUrl;
   final int rating;
   final String? comment;
   final double reputationDelta;
@@ -17,8 +21,9 @@ class ReviewDto {
   const ReviewDto({
     required this.id,
     required this.rentalRequestId,
-    this.reviewer,
-    this.reviewee,
+    required this.reviewerId,
+    required this.reviewerName,
+    this.reviewerAvatarUrl,
     required this.rating,
     this.comment,
     required this.reputationDelta,

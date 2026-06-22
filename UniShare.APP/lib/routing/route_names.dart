@@ -29,6 +29,7 @@ class RouteNames {
   // Sub-routes (pushed onto stacks)
   static const String listingDetail = 'listings/:listingId';
   static const String comments = 'comments';
+  static const String rentalRequest = 'request';
   static const String editListing = 'listings/:listingId/edit';
   static const String chatDetail = ':conversationId';
   static const String requestDetail = 'requests/:requestId';

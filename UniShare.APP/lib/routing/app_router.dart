@@ -15,7 +15,10 @@ import '../features/comments/presentation/screens/comments_screen.dart';
 import '../features/conversations/presentation/screens/conversation_list_screen.dart';
 import '../features/conversations/presentation/screens/chat_detail_screen.dart';
 import '../features/rentals/presentation/screens/rental_request_detail_screen.dart';
+import '../features/rentals/presentation/screens/rental_request_form_screen.dart';
 import '../features/rentals/presentation/screens/my_requests_screen.dart';
+import '../features/deposits/presentation/screens/deposit_status_screen.dart';
+import '../features/reviews/presentation/screens/review_form_screen.dart';
 import '../features/notifications/presentation/screens/notifications_screen.dart';
 import '../features/users/presentation/screens/profile_screen.dart';
 import '../features/users/presentation/screens/edit_profile_screen.dart';
@@ -107,6 +110,24 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => RentalRequestDetailScreen(
           requestId: state.pathParameters['requestId']!,
         ),
+        routes: [
+          GoRoute(
+            path: 'deposit',
+            builder: (context, state) => DepositStatusScreen(
+              requestId: state.pathParameters['requestId']!,
+            ),
+          ),
+          GoRoute(
+            path: 'review',
+            builder: (context, state) => ReviewFormScreen(
+              requestId: state.pathParameters['requestId']!,
+              revieweeName:
+                  (state.extra as Map?)?['revieweeName'] as String?,
+              revieweeAvatarUrl:
+                  (state.extra as Map?)?['revieweeAvatarUrl'] as String?,
+            ),
+          ),
+        ],
       ),
       // Shell route with bottom navigation
       ShellRoute(
@@ -129,6 +150,26 @@ final routerProvider = Provider<GoRouter>((ref) {
                       listingId: state.pathParameters['listingId']!,
                     ),
                   ),
+                  GoRoute(
+                    path: 'request',
+                    builder: (context, state) => RentalRequestFormScreen(
+                      listingId: state.pathParameters['listingId']!,
+                      listingTitle:
+                          (state.extra as Map?)?['listingTitle'] as String? ??
+                              '',
+                      listingPricePerDay:
+                          (state.extra as Map?)?['listingPricePerDay']
+                                  as double? ??
+                              0,
+                      listingDepositAmount:
+                          (state.extra as Map?)?['listingDepositAmount']
+                                  as double? ??
+                              0,
+                      listingType:
+                          (state.extra as Map?)?['listingType'] as String? ??
+                              'rent',
+                    ),
+                  ),
                 ],
               ),
             ],
@@ -149,6 +190,26 @@ final routerProvider = Provider<GoRouter>((ref) {
                     path: 'comments',
                     builder: (context, state) => CommentsScreen(
                       listingId: state.pathParameters['listingId']!,
+                    ),
+                  ),
+                  GoRoute(
+                    path: 'request',
+                    builder: (context, state) => RentalRequestFormScreen(
+                      listingId: state.pathParameters['listingId']!,
+                      listingTitle:
+                          (state.extra as Map?)?['listingTitle'] as String? ??
+                              '',
+                      listingPricePerDay:
+                          (state.extra as Map?)?['listingPricePerDay']
+                                  as double? ??
+                              0,
+                      listingDepositAmount:
+                          (state.extra as Map?)?['listingDepositAmount']
+                                  as double? ??
+                              0,
+                      listingType:
+                          (state.extra as Map?)?['listingType'] as String? ??
+                              'rent',
                     ),
                   ),
                 ],
@@ -213,6 +274,25 @@ final routerProvider = Provider<GoRouter>((ref) {
                         RentalRequestDetailScreen(
                       requestId: state.pathParameters['requestId']!,
                     ),
+                    routes: [
+                      GoRoute(
+                        path: 'deposit',
+                        builder: (context, state) => DepositStatusScreen(
+                          requestId: state.pathParameters['requestId']!,
+                        ),
+                      ),
+                      GoRoute(
+                        path: 'review',
+                        builder: (context, state) {
+                          final extra = state.extra as Map?;
+                          return ReviewFormScreen(
+                            requestId: state.pathParameters['requestId']!,
+                            revieweeName: extra?['revieweeName'] as String?,
+                            revieweeAvatarUrl: extra?['revieweeAvatarUrl'] as String?,
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),

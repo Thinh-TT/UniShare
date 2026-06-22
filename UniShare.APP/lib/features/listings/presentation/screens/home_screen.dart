@@ -8,6 +8,8 @@ import '../../../../shared/widgets/loading_state.dart';
 import '../../../../shared/widgets/empty_state.dart';
 import '../../../../shared/widgets/error_state.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
+import '../../../notifications/presentation/providers/notifications_provider.dart'
+    show unreadCountProvider;
 import '../providers/listings_provider.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -74,8 +76,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     context.go('/search');
   }
 
-  void _navigateToNotifications() {
-    context.push('/notifications');
+  Future<void> _navigateToNotifications() async {
+    await context.push('/notifications');
+    if (mounted) {
+      ref.invalidate(unreadCountProvider);
+    }
   }
 
   @override
@@ -83,6 +88,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final listingsAsync = ref.watch(listingsProvider(_filters));
     final authState = ref.watch(authProvider);
     final isAuthenticated = authState is AuthAuthenticated;
+    final unreadCountAsync = ref.watch(unreadCountProvider);
+    final unreadCount = unreadCountAsync.valueOrNull ?? 0;
 
     return Scaffold(
       backgroundColor: AppColors.white,
@@ -90,9 +97,37 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         backgroundColor: AppColors.white,
         title: const Text('UniShare'),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications_outlined),
-            onPressed: _navigateToNotifications,
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.notifications_outlined),
+                onPressed: _navigateToNotifications,
+              ),
+              if (unreadCount > 0)
+                Positioned(
+                  right: 6,
+                  top: 6,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: const BoxDecoration(
+                      color: AppColors.danger,
+                      shape: BoxShape.circle,
+                    ),
+                    constraints:
+                        const BoxConstraints(minWidth: 18, minHeight: 18),
+                    child: Text(
+                      unreadCount > 99 ? '99+' : '$unreadCount',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+            ],
           ),
           if (isAuthenticated) ...[
             IconButton(

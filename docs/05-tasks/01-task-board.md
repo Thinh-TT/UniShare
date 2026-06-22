@@ -181,12 +181,12 @@ Task board này bám theo:
 | `FE-INT-002`  | Build Comments screen                    | `FR-012`                     | `[x]`  | P1       | `FE-LIST-003`, `API-INT-003`  | List/create/reply/edit/delete comment         |
 | `FE-CHAT-001` | Build Conversation List                  | `FR-013`                     | `[x]`  | P0       | `FE-CORE-006`, `API-CHAT-002` | List hội thoại và unread indicator            |
 | `FE-CHAT-002` | Build Chat Detail + SignalR client       | `FR-014`                     | `[x]`  | P0       | `FE-CHAT-001`, `API-CHAT-004` | Realtime send/receive/mark read               |
-| `FE-REQ-001`  | Build Rental Request Form                | `FR-015`                     | `[ ]`  | P0       | `FE-LIST-003`, `API-REQ-001`  | Chọn ngày, tính tiền, gửi request             |
-| `FE-REQ-002`  | Build My Rental Requests                 | `FR-017`                     | `[ ]`  | P0       | `API-REQ-002`                 | Segment tôi gửi/gửi đến tôi                   |
-| `FE-REQ-003`  | Build Rental Request Detail              | `FR-016`, `FR-017`, `FR-019` | `[ ]`  | P0       | `FE-REQ-002`, `API-REQ-004`   | Accept/reject/cancel/start/complete theo role |
-| `FE-DEP-001`  | Build Deposit Status screen              | `FR-018`                     | `[ ]`  | P1       | `FE-REQ-003`, `API-DEP-001`   | Xem/mark paid/refund theo MVP                 |
-| `FE-REV-001`  | Build Review Form                        | `FR-020`                     | `[ ]`  | P0       | `FE-REQ-003`, `API-REV-001`   | Review sau Completed, không review trùng      |
-| `FE-NOTI-001` | Build Notifications screen và badge      | `FR-021`                     | `[ ]`  | P0       | `API-NOTI-002`                | List/read/read all/deep link                  |
+| `FE-REQ-001`  | Build Rental Request Form                | `FR-015`                     | `[x]`  | P0       | `FE-LIST-003`, `API-REQ-001`  | Chọn ngày, tính tiền, gửi request             |
+| `FE-REQ-002`  | Build My Rental Requests                 | `FR-017`                     | `[x]`  | P0       | `API-REQ-002`                 | Segment tôi gửi/gửi đến tôi                   |
+| `FE-REQ-003`  | Build Rental Request Detail              | `FR-016`, `FR-017`, `FR-019` | `[x]`  | P0       | `FE-REQ-002`, `API-REQ-004`   | Accept/reject/cancel/start/complete theo role |
+| `FE-DEP-001`  | Build Deposit Status screen              | `FR-018`                     | `[x]`  | P1       | `FE-REQ-003`, `API-DEP-001`   | Xem/mark paid/refund theo MVP                 |
+| `FE-REV-001`  | Build Review Form                        | `FR-020`                     | `[x]`  | P0       | `FE-REQ-003`, `API-REV-001`   | Review sau Completed, không review trùng      |
+| `FE-NOTI-001` | Build Notifications screen và badge      | `FR-021`                     | `[x]`  | P0       | `API-NOTI-002`                | List/read/read all/deep link                  |
 
 ## 10. Phase 6 - Flutter Testing
 
