@@ -2,6 +2,8 @@ import '../../../core/network/api_client.dart';
 import '../../../core/constants/api_endpoints.dart';
 import '../models/school_dto.dart';
 import '../models/area_dto.dart';
+import '../models/category_dto.dart';
+import '../models/tag_dto.dart';
 
 /// Low-level API calls for reference data (schools, areas, categories, tags).
 class ReferenceApi {
@@ -24,6 +26,24 @@ class ReferenceApi {
     final list = response['data'] as List<dynamic>;
     return list
         .map((e) => AreaDto.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  /// Fetch all active categories.
+  Future<List<CategoryDto>> getCategories() async {
+    final response = await _apiClient.getRaw(path: ApiEndpoints.categories);
+    final list = response['data'] as List<dynamic>;
+    return list
+        .map((e) => CategoryDto.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  /// Fetch all tags.
+  Future<List<TagDto>> getTags() async {
+    final response = await _apiClient.getRaw(path: ApiEndpoints.tags);
+    final list = response['data'] as List<dynamic>;
+    return list
+        .map((e) => TagDto.fromJson(e as Map<String, dynamic>))
         .toList();
   }
 }
