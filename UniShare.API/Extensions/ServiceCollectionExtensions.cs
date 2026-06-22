@@ -153,14 +153,44 @@ public static class ServiceCollectionExtensions
         {
             options.AddPolicy("UniShareMobile", policy =>
             {
-                policy.WithOrigins(allowedOrigins)
-                      .AllowAnyHeader()
-                      .AllowAnyMethod()
-                      .AllowCredentials();
+                policy.SetIsOriginAllowed(origin =>
+                    {
+                        foreach (var pattern in allowedOrigins)
+                        {
+                            if (MatchWildcardOrigin(pattern, origin))
+                                return true;
+                        }
+                        return false;
+                    })
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
             });
         });
 
         return services;
+    }
+
+    /// <summary>
+    /// Matches an origin against a pattern that may contain a single <c>*</c>
+    /// wildcard in the port or path position.
+    /// </summary>
+    /// <example>
+    /// MatchWildcardOrigin("http://localhost:*", "http://localhost:5056") → true
+    /// MatchWildcardOrigin("http://10.0.2.2:*", "http://10.0.2.2:5056") → true
+    /// MatchWildcardOrigin("http://127.0.0.1:*", "http://127.0.0.1:8080") → true
+    /// </example>
+    private static bool MatchWildcardOrigin(string pattern, string origin)
+    {
+        if (pattern == origin)
+            return true;
+
+        // Escape regex special chars except *
+        var regex = "^"
+            + System.Text.RegularExpressions.Regex.Escape(pattern).Replace("\\*", "[^/]+")
+            + "$";
+
+        return System.Text.RegularExpressions.Regex.IsMatch(origin, regex);
     }
 
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)

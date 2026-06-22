@@ -14,7 +14,7 @@ ListingDetailDto _$ListingDetailDtoFromJson(Map<String, dynamic> json) =>
       listingType: $enumDecode(_$ListingTypeEnumMap, json['listingType']),
       status: $enumDecode(_$ListingStatusEnumMap, json['status']),
       pricePerDay: (json['pricePerDay'] as num).toDouble(),
-      depositAmount: (json['depositAmount'] as num).toDouble(),
+      depositAmount: (json['depositAmount'] as num?)?.toDouble(),
       conditionNote: json['conditionNote'] as String?,
       category: json['category'] == null
           ? null
@@ -25,7 +25,9 @@ ListingDetailDto _$ListingDetailDtoFromJson(Map<String, dynamic> json) =>
       area: json['area'] == null
           ? null
           : AreaDto.fromJson(json['area'] as Map<String, dynamic>),
-      tags: (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      tags: (json['tags'] as List<dynamic>?)
+          ?.map((e) => TagDto.fromJson(e as Map<String, dynamic>))
+          .toList(),
       images: (json['images'] as List<dynamic>?)
           ?.map((e) => ListingImageDto.fromJson(e as Map<String, dynamic>))
           .toList(),

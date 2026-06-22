@@ -103,11 +103,21 @@ class ChatNotifier extends StateNotifier<ChatState> {
       // Start listening for real-time messages
       _listenForRealTimeMessages();
 
-      // Mark messages as read (from other participant)
-      await _repository.markAsRead(conversationId);
+      // Mark messages as read (from other participant).
+      // Non-critical: must never prevent chat display.
+      try {
+        await _repository.markAsRead(conversationId);
+      } catch (_) {
+        // Silently ignore — will be retried on next message receive.
+      }
 
-      // Join SignalR conversation group
-      await _signalR.joinConversation(conversationId);
+      // Join SignalR conversation group.
+      // Non-critical: real-time messages are a convenience, not required.
+      try {
+        await _signalR.joinConversation(conversationId);
+      } catch (_) {
+        // Silently ignore — new messages will appear on next HTTP refresh.
+      }
     } catch (e) {
       state = ChatError(e.toString());
     }
@@ -115,23 +125,32 @@ class ChatNotifier extends StateNotifier<ChatState> {
 
   void _listenForRealTimeMessages() {
     _messageSub = _signalR.onMessageReceived.listen((data) {
-      final message = MessageDto.fromJson(data);
-      // Only process messages for this conversation
-      if (message.conversationId != conversationId) return;
-      if (state is! ChatLoaded) return;
+      try {
+        final message = MessageDto.fromJson(data);
+        // Only process messages for this conversation
+        if (message.conversationId != conversationId) return;
+        if (state is! ChatLoaded) return;
 
-      final loaded = state as ChatLoaded;
-      // Avoid duplicates (in case SignalR echoes our own message)
-      if (loaded.messages.any((m) => m.id == message.id)) return;
+        final loaded = state as ChatLoaded;
+        // Avoid duplicates (in case SignalR echoes our own message)
+        if (loaded.messages.any((m) => m.id == message.id)) return;
 
-      state = ChatLoaded(
-        messages: [...loaded.messages, message],
-        conversation: loaded.conversation,
-        hasMore: loaded.hasMore,
-      );
+        state = ChatLoaded(
+          messages: [...loaded.messages, message],
+          conversation: loaded.conversation,
+          hasMore: loaded.hasMore,
+        );
 
-      // Mark as read when received in real-time
-      _repository.markAsRead(conversationId);
+        // Mark as read when received in real-time.
+        // Non-critical: must never break the message stream.
+        try {
+          _repository.markAsRead(conversationId);
+        } catch (_) {
+          // Silently ignore — not critical for message display.
+        }
+      } catch (_) {
+        // Malformed message data — skip silently to preserve the stream.
+      }
     });
   }
 

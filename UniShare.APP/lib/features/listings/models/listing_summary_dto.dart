@@ -13,7 +13,7 @@ class ListingSummaryDto {
   final ListingType listingType;
   final ListingStatus status;
   final double pricePerDay;
-  final double depositAmount;
+  final double? depositAmount;
   final String? categoryName;
   final String? schoolName;
   final String? areaName;
@@ -29,7 +29,7 @@ class ListingSummaryDto {
     required this.listingType,
     required this.status,
     required this.pricePerDay,
-    required this.depositAmount,
+    this.depositAmount,
     this.categoryName,
     this.schoolName,
     this.areaName,

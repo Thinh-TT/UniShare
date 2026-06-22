@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../config/app_colors.dart';
+import '../utils/image_url_resolver.dart';
 
 /// User avatar with optional reputation badge.
 class UserAvatar extends StatelessWidget {
@@ -9,6 +10,7 @@ class UserAvatar extends StatelessWidget {
   final double? reputationScore;
   final double size;
   final VoidCallback? onTap;
+  final String mediaBaseUrl;
 
   const UserAvatar({
     super.key,
@@ -17,6 +19,7 @@ class UserAvatar extends StatelessWidget {
     this.reputationScore,
     this.size = 40,
     this.onTap,
+    required this.mediaBaseUrl,
   });
 
   String get _initials {
@@ -31,7 +34,7 @@ class UserAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     final avatar = avatarUrl != null && avatarUrl!.isNotEmpty
         ? CachedNetworkImage(
-            imageUrl: avatarUrl!,
+            imageUrl: resolveImageUrl(mediaBaseUrl, avatarUrl),
             imageBuilder: (context, imageProvider) => CircleAvatar(
               radius: size / 2,
               backgroundImage: imageProvider,

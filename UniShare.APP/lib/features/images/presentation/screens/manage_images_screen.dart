@@ -1,10 +1,12 @@
-import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../config/app_colors.dart';
+import '../../../../config/app_config.dart';
+import '../../../../shared/utils/image_url_resolver.dart';
 import '../../../../shared/widgets/loading_state.dart';
 import '../../../../shared/widgets/empty_state.dart';
 import '../../../../shared/widgets/error_state.dart';
@@ -31,12 +33,12 @@ class _ManageImagesScreenState extends ConsumerState<ManageImagesScreen> {
   @override
   void initState() {
     super.initState();
-    final listingId = _listingId;
-    if (listingId != null) {
-      Future.microtask(() {
+    Future.microtask(() {
+      final listingId = _listingId;
+      if (listingId != null) {
         ref.read(imagesProvider(listingId).notifier).loadImages();
-      });
-    }
+      }
+    });
   }
 
   Future<void> _pickAndUpload() async {
@@ -49,7 +51,11 @@ class _ManageImagesScreenState extends ConsumerState<ManageImagesScreen> {
     );
 
     if (picked.isNotEmpty && mounted) {
-      final files = picked.map((x) => File(x.path)).toList();
+      final files = <({Uint8List bytes, String filename})>[];
+      for (final x in picked) {
+        final bytes = await x.readAsBytes();
+        files.add((bytes: bytes, filename: x.name));
+      }
       final success = await ref
           .read(imagesProvider(listingId).notifier)
           .uploadImages(files);
@@ -124,6 +130,7 @@ class _ManageImagesScreenState extends ConsumerState<ManageImagesScreen> {
     }
 
     final state = ref.watch(imagesProvider(listingId));
+    final mediaBaseUrl = ref.watch(appConfigProvider).mediaBaseUrl;
 
     return Scaffold(
       backgroundColor: AppColors.white,
@@ -210,6 +217,7 @@ class _ManageImagesScreenState extends ConsumerState<ManageImagesScreen> {
                                   return _ImageTile(
                                     image: image,
                                     isUploading: state.isUploading,
+                                    mediaBaseUrl: mediaBaseUrl,
                                     onSetCover: () =>
                                         _setCover(image.id),
                                     onDelete: () =>
@@ -237,12 +245,14 @@ class _ManageImagesScreenState extends ConsumerState<ManageImagesScreen> {
 class _ImageTile extends StatelessWidget {
   final ListingImageDto image;
   final bool isUploading;
+  final String mediaBaseUrl;
   final VoidCallback onSetCover;
   final VoidCallback onDelete;
 
   const _ImageTile({
     required this.image,
     required this.isUploading,
+    required this.mediaBaseUrl,
     required this.onSetCover,
     required this.onDelete,
   });
@@ -256,7 +266,7 @@ class _ImageTile extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(12),
           child: CachedNetworkImage(
-            imageUrl: image.imageUrl,
+            imageUrl: resolveImageUrl(mediaBaseUrl, image.imageUrl),
             fit: BoxFit.cover,
             placeholder: (_, __) => Container(
               color: AppColors.neutral100,

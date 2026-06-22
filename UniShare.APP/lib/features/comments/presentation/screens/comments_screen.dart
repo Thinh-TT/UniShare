@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../config/app_colors.dart';
+import '../../../../config/app_config.dart';
 import '../../../../shared/widgets/loading_state.dart';
 import '../../../../shared/widgets/error_state.dart';
 import '../../../../shared/widgets/empty_state.dart';
@@ -214,6 +215,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
                     avatarUrl: comment.userAvatarUrl,
                     fullName: comment.userName,
                     size: 32,
+                    mediaBaseUrl: ref.read(appConfigProvider).mediaBaseUrl,
                   ),
                   const SizedBox(width: 10),
                   Expanded(

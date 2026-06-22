@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import '../../../core/network/api_client.dart';
 import '../../../core/constants/api_endpoints.dart';
@@ -12,59 +12,53 @@ class ImagesApi {
   ImagesApi({required ApiClient apiClient}) : _apiClient = apiClient;
 
   /// Get all images for a listing.
+  ///
+  /// There is no dedicated GET endpoint for images on the backend.
+  /// Images are included in the listing detail response, so we fetch the
+  /// listing and extract the images list.
   Future<List<ListingImageDto>> getImages(String listingId) async {
-    final response = await _apiClient.get<Map<String, dynamic>>(
-      path: ApiEndpoints.listingImages(listingId),
-      fromJsonT: (json) => json,
+    final response = await _apiClient.getRaw(
+      path: ApiEndpoints.listingById(listingId),
     );
-    // The images endpoint might return data as a map with an items list,
-    // or directly as a list. Try both formats.
-    final data = response.data;
-    if (data != null && data.containsKey('items')) {
-      final list = data['items'] as List<dynamic>;
-      return list
-          .map((e) => ListingImageDto.fromJson(e as Map<String, dynamic>))
-          .toList();
-    }
-    // Fallback: might be wrapped differently
-    return [];
+    final data = response['data'] as Map<String, dynamic>;
+    final images = (data['images'] as List<dynamic>?)
+            ?.map(
+                (e) => ListingImageDto.fromJson(e as Map<String, dynamic>))
+            .toList() ??
+        [];
+    return images;
   }
 
-  /// Upload images for a listing. Returns the updated image list.
+  /// Upload images for a listing.
+  ///
+  /// Backend returns ApiResponse<List<ListingImageDto>> where the `data`
+  /// field is a JSON array (not a map). We use postMultipartRaw to get the
+  /// raw wrapper map and extract the list from `data`.
   Future<List<ListingImageDto>> uploadImages(
     String listingId,
-    List<File> files,
+    List<({Uint8List bytes, String filename})> files,
   ) async {
     final formData = FormData();
     for (final file in files) {
       formData.files.add(
         MapEntry(
           'files',
-          await MultipartFile.fromFile(file.path),
+          MultipartFile.fromBytes(file.bytes, filename: file.filename),
         ),
       );
     }
 
-    final response = await _apiClient.postMultipart<Map<String, dynamic>>(
+    final response = await _apiClient.postMultipartRaw(
       path: ApiEndpoints.listingImages(listingId),
       formData: formData,
-      fromJsonT: (json) => json,
     );
 
-    final data = response.data;
-    if (data != null && data.containsKey('items')) {
-      final list = data['items'] as List<dynamic>;
-      return list
+    // Backend returns: {"data": [...images...], "message": "..."}
+    final dataList = response['data'] as List<dynamic>?;
+    if (dataList != null) {
+      return dataList
           .map((e) => ListingImageDto.fromJson(e as Map<String, dynamic>))
           .toList();
-    }
-    if (data != null && data.containsKey('data')) {
-      final inner = data['data'];
-      if (inner is List) {
-        return inner
-            .map((e) => ListingImageDto.fromJson(e as Map<String, dynamic>))
-            .toList();
-      }
     }
     return [];
   }

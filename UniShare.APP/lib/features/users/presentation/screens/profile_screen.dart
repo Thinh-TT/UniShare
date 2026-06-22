@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/app_colors.dart';
+import '../../../../config/app_config.dart';
 import '../../../../shared/widgets/app_button.dart';
 import '../../../../shared/widgets/confirm_dialog.dart';
 import '../../../../shared/widgets/error_state.dart';
@@ -30,6 +31,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
     if (confirmed == true && mounted) {
       await ref.read(authProvider.notifier).logout();
+      // Navigate to login after successful logout.
+      // Router redirect will confirm the unauthenticated state.
+      if (mounted) context.go('/login');
     }
   }
 
@@ -76,6 +80,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     fullName: profile.fullName,
                     reputationScore: profile.reputationScore,
                     size: 80,
+                    mediaBaseUrl: ref.read(appConfigProvider).mediaBaseUrl,
                   ),
                   const SizedBox(height: 16),
                   Text(

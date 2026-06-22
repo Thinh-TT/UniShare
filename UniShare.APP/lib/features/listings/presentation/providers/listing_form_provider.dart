@@ -34,6 +34,10 @@ class ListingFormState {
   final String? titleError;
   final String? descriptionError;
   final String? categoryError;
+  final String? priceError;
+  final String? depositError;
+  final String? conditionNoteError;
+  final String? tagsError;
 
   const ListingFormState({
     this.title = '',
@@ -57,6 +61,10 @@ class ListingFormState {
     this.titleError,
     this.descriptionError,
     this.categoryError,
+    this.priceError,
+    this.depositError,
+    this.conditionNoteError,
+    this.tagsError,
   });
 
   ListingFormState copyWith({
@@ -81,6 +89,10 @@ class ListingFormState {
     String? titleError,
     String? descriptionError,
     String? categoryError,
+    String? priceError,
+    String? depositError,
+    String? conditionNoteError,
+    String? tagsError,
     bool clearCategoryId = false,
     bool clearCategoryName = false,
     bool clearSchoolId = false,
@@ -91,6 +103,10 @@ class ListingFormState {
     bool clearTitleError = false,
     bool clearDescriptionError = false,
     bool clearCategoryError = false,
+    bool clearPriceError = false,
+    bool clearDepositError = false,
+    bool clearConditionNoteError = false,
+    bool clearTagsError = false,
   }) {
     return ListingFormState(
       title: title ?? this.title,
@@ -123,6 +139,13 @@ class ListingFormState {
       categoryError: clearCategoryError
           ? null
           : (categoryError ?? this.categoryError),
+      priceError: clearPriceError ? null : (priceError ?? this.priceError),
+      depositError:
+          clearDepositError ? null : (depositError ?? this.depositError),
+      conditionNoteError: clearConditionNoteError
+          ? null
+          : (conditionNoteError ?? this.conditionNoteError),
+      tagsError: clearTagsError ? null : (tagsError ?? this.tagsError),
     );
   }
 }
@@ -173,19 +196,22 @@ class ListingFormNotifier extends StateNotifier<ListingFormState> {
     }
   }
 
-  void setPricePerDay(double v) => state = state.copyWith(pricePerDay: v);
+  void setPricePerDay(double v) =>
+      state = state.copyWith(pricePerDay: v, clearPriceError: true);
   void setDepositAmount(double v) =>
-      state = state.copyWith(depositAmount: v);
+      state = state.copyWith(depositAmount: v, clearDepositError: true);
   void setConditionNote(String v) =>
-      state = state.copyWith(conditionNote: v);
+      state = state.copyWith(conditionNote: v, clearConditionNoteError: true);
 
   void addTag(String t) {
     if (t.isEmpty || state.tags.contains(t)) return;
-    state = state.copyWith(tags: [...state.tags, t]);
+    state = state.copyWith(tags: [...state.tags, t], clearTagsError: true);
   }
 
   void removeTag(String t) =>
-      state = state.copyWith(tags: state.tags.where((x) => x != t).toList());
+      state = state.copyWith(
+          tags: state.tags.where((x) => x != t).toList(),
+          clearTagsError: true);
 
   /// Pre-fill the form from an existing listing (edit mode).
   void loadExistingListing(ListingDetailDto listing) {
@@ -200,9 +226,9 @@ class ListingFormNotifier extends StateNotifier<ListingFormState> {
       areaName: listing.area?.name,
       listingType: listing.listingType,
       pricePerDay: listing.pricePerDay,
-      depositAmount: listing.depositAmount,
+      depositAmount: listing.depositAmount ?? 0,
       conditionNote: listing.conditionNote ?? '',
-      tags: listing.tags ?? [],
+      tags: (listing.tags ?? []).map((t) => t.name).toList(),
       isEditMode: true,
       listingId: listing.id,
     );
@@ -215,24 +241,88 @@ class ListingFormNotifier extends StateNotifier<ListingFormState> {
 
   /// Validate all fields. Returns true if valid.
   bool validate() {
-    final titleError =
-        state.title.trim().isEmpty ? 'Vui lòng nhập tiêu đề' : null;
-    final descriptionError = state.description.trim().isEmpty
-        ? 'Vui lòng nhập mô tả'
-        : null;
+    final trimmedTitle = state.title.trim();
+    final trimmedDesc = state.description.trim();
+
+    // Title
+    String? titleError;
+    if (trimmedTitle.isEmpty) {
+      titleError = 'Vui lòng nhập tiêu đề';
+    } else if (trimmedTitle.length < 5) {
+      titleError = 'Tiêu đề phải có ít nhất 5 ký tự';
+    } else if (trimmedTitle.length > 200) {
+      titleError = 'Tiêu đề không được vượt quá 200 ký tự';
+    }
+
+    // Description
+    String? descriptionError;
+    if (trimmedDesc.isEmpty) {
+      descriptionError = 'Vui lòng nhập mô tả';
+    } else if (trimmedDesc.length < 20) {
+      descriptionError = 'Mô tả phải có ít nhất 20 ký tự';
+    } else if (trimmedDesc.length > 2000) {
+      descriptionError = 'Mô tả không được vượt quá 2000 ký tự';
+    }
+
+    // Category
     final categoryError =
         state.categoryId == null ? 'Vui lòng chọn danh mục' : null;
+
+    // Price
+    String? priceError;
+    if (state.listingType == ListingType.rent) {
+      if (state.pricePerDay <= 0) {
+        priceError = 'Vui lòng nhập giá cho thuê lớn hơn 0';
+      }
+    }
+
+    // Deposit
+    String? depositError;
+    if (state.depositAmount < 0) {
+      depositError = 'Tiền cọc không được âm';
+    }
+
+    // Condition note
+    String? conditionNoteError;
+    if (state.conditionNote.length > 500) {
+      conditionNoteError = 'Ghi chú tình trạng không được vượt quá 500 ký tự';
+    }
+
+    // Tags
+    String? tagsError;
+    if (state.tags.length > 10) {
+      tagsError = 'Tối đa 10 thẻ tag';
+    } else {
+      for (final t in state.tags) {
+        if (t.length < 2) {
+          tagsError = 'Mỗi tag phải có ít nhất 2 ký tự';
+          break;
+        }
+        if (t.length > 50) {
+          tagsError = 'Mỗi tag không được vượt quá 50 ký tự';
+          break;
+        }
+      }
+    }
 
     state = state.copyWith(
       titleError: titleError,
       descriptionError: descriptionError,
       categoryError: categoryError,
+      priceError: priceError,
+      depositError: depositError,
+      conditionNoteError: conditionNoteError,
+      tagsError: tagsError,
       hasSubmitted: true,
     );
 
     return titleError == null &&
         descriptionError == null &&
-        categoryError == null;
+        categoryError == null &&
+        priceError == null &&
+        depositError == null &&
+        conditionNoteError == null &&
+        tagsError == null;
   }
 
   /// Submit the form. Returns the created/updated listing ID on success, or null on failure.

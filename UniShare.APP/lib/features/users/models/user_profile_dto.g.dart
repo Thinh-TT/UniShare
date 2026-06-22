@@ -19,7 +19,7 @@ UserProfileDto _$UserProfileDtoFromJson(Map<String, dynamic> json) =>
       areaName: json['areaName'] as String?,
       reputationScore: (json['reputationScore'] as num).toDouble(),
       totalReviews: (json['totalReviews'] as num).toInt(),
-      isVerified: json['isVerified'] as bool,
+      isVerified: json['isVerified'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$UserProfileDtoToJson(UserProfileDto instance) =>

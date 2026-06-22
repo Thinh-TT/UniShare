@@ -153,3 +153,50 @@ Dio connectTimeout:                15s (network layer, ít khi chạm tới vì 
 ### Kết quả
 
 App vào thành công trên Samsung A56 qua Wi-Fi. Còn lỗi đăng nhập (sẽ xử lý phiên sau).
+
+---
+
+## Vấn đề 4: Timeout toàn bộ API khi chạy Flutter Web (2026-06-22)
+
+### Triệu chứng
+
+Chạy app trên Edge browser (web), tất cả API call đều bị `DioException [connection timeout]` sau 15 giây:
+
+```
+uri: http://10.0.2.2:5056/api/v1/auth/login
+DioException [connection timeout]: The request connection took longer than 0:00:15.000000
+```
+
+Đăng nhập, đăng ký, lấy danh sách, thông báo — tất cả đều timeout.
+
+### Nguyên nhân
+
+**`10.0.2.2` không phân giải được trên trình duyệt web.**
+
+- `10.0.2.2` là IP đặc biệt của **Android Emulator** để kết nối tới `localhost` máy host
+- Khi chạy Flutter trên **web**, app chạy trong browser thật (Edge/Chrome) — browser không biết `10.0.2.2` là gì → TCP connection không thiết lập được → timeout sau 15 giây
+- `AppConfig.fromDartDefine()` mặc định trả về `AppConfig.dev` (dùng `10.0.2.2`) bất kể nền tảng — không phân biệt web vs mobile
+
+Ngoài ra, CORS backend dùng `WithOrigins("http://localhost:*", "http://10.0.2.2:*")` — nhưng `WithOrigins` **không hỗ trợ wildcard `*`**. Pattern `http://localhost:*` được coi là literal string, không khớp với `http://localhost:52341` (port ngẫu nhiên của Flutter web). Dù chưa gây lỗi ngay (vì 10.0.2.2 đã timeout trước), nhưng sẽ gây CORS lỗi ngay sau khi sửa URL.
+
+### Fix
+
+| File | Thay đổi | Lý do |
+| ---- | -------- | ----- |
+| `lib/config/app_config.dart` | Thêm `devWeb` config dùng `localhost:5056`; `fromDartDefine()` dùng `kIsWeb` để auto-detect | Web tự động dùng localhost thay vì 10.0.2.2 |
+| `Extensions/ServiceCollectionExtensions.cs` | Thay `policy.WithOrigins(allowedOrigins)` bằng `policy.SetIsOriginAllowed(...)` với prefix matching | `WithOrigins` không hỗ trợ wildcard; `SetIsOriginAllowed` cho phép match mọi port trên localhost |
+
+### Cách hoạt động mới của AppConfig
+
+```
+kIsWeb == true  → AppConfig.devWeb  (http://localhost:5056)
+kIsWeb == false → AppConfig.dev     (http://10.0.2.2:5056)
+--dart-define=API_HOST=<ip> → dynamic LAN config (ghi đè tất cả)
+--dart-define=ENV=lan       → AppConfig.lan (192.168.2.2)
+```
+
+### Bài học bổ sung
+
+8. **`10.0.2.2` chỉ hoạt động trên Android Emulator.** Trên web cần `localhost`, trên điện thoại thật cần IP LAN của máy dev. Không có một URL nào hoạt động cho tất cả nền tảng — phải detect platform hoặc dùng dart-define.
+9. **`WithOrigins` không hỗ trợ wildcard `*`.** Để cho phép CORS từ nhiều port trên cùng host, phải dùng `SetIsOriginAllowed` với predicate kiểm tra prefix.
+10. **Luôn test trên cả 3 nền tảng:** Android Emulator (`10.0.2.2`), Web (`localhost`), và thiết bị thật (IP LAN) — mỗi nền tảng có địa chỉ backend khác nhau.

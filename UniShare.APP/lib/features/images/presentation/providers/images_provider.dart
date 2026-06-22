@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/images_api.dart';
 import '../../models/listing_image_dto.dart';
@@ -67,7 +67,7 @@ class ImagesNotifier extends StateNotifier<ImagesState> {
   }
 
   /// Upload new images.
-  Future<bool> uploadImages(List<File> files) async {
+  Future<bool> uploadImages(List<({Uint8List bytes, String filename})> files) async {
     if (files.isEmpty) return false;
 
     state = state.copyWith(isUploading: true, clearErrorMessage: true);

@@ -1,0 +1,59 @@
+# ============================================================
+# UniShare — Docker Compose (API + ngrok tunnel)
+# ============================================================
+#
+# Prerequisites:
+#   1. Docker Desktop installed and running.
+#   2. SQL Server running on the host machine (localhost:1433).
+#   3. Set NGROK_AUTHTOKEN in your environment or a .env file:
+#        set NGROK_AUTHTOKEN=<your-token>       (Windows cmd)
+#        $env:NGROK_AUTHTOKEN="<your-token>"    (PowerShell)
+#        export NGROK_AUTHTOKEN=<your-token>    (Git Bash)
+#
+# The API connects to the host SQL Server via `host.docker.internal`.
+# ngrok is included as a service — starts automatically, no separate install.
+#
+# Start:  docker compose up -d --build
+# Stop:   docker compose down
+# Get ngrok URL:  docker logs unishare-ngrok
+# ============================================================
+
+services:
+  # ---- UniShare API ----
+  api:
+    build:
+      context: ./UniShare.API
+      dockerfile: Dockerfile
+    container_name: unishare-api
+    ports:
+      - "5056:5056"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:5056
+      - ConnectionStrings__DefaultConnection=Server=host.docker.internal,1433;Database=UniShare;User Id=sa;Password=Thinh@12345;TrustServerCertificate=True;MultipleActiveResultSets=true
+    networks:
+      - unishare-network
+    volumes:
+      - uploads_data:/app/wwwroot/uploads
+
+  # ---- ngrok tunnel ----
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: unishare-ngrok
+    command:
+      - "http"
+      - "api:5056"
+      - "--log=stdout"
+    environment:
+      NGROK_AUTHTOKEN: "${NGROK_AUTHTOKEN}"
+    depends_on:
+      - api
+    networks:
+      - unishare-network
+
+volumes:
+  uploads_data:
+
+networks:
+  unishare-network:
+    driver: bridge

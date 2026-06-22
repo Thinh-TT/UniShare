@@ -15,6 +15,7 @@ class UserProfileDto {
   final String? areaName;
   final double reputationScore;
   final int totalReviews;
+  @JsonKey(defaultValue: false)
   final bool isVerified;
 
   const UserProfileDto({

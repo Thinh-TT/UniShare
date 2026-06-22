@@ -64,6 +64,10 @@ class AuthInterceptor extends Interceptor {
         baseUrl: _appConfig.apiBaseUrl,
         connectTimeout: const Duration(seconds: 10),
         receiveTimeout: const Duration(seconds: 10),
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true',
+        },
       )).post(
         ApiEndpoints.refreshToken,
         data: {'refreshToken': refreshToken},

@@ -63,7 +63,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             _loginController.text.trim(),
             _passwordController.text,
           );
-      // Redirect handled by auth state listener in router
+      // Navigate to home after successful login.
+      // Router redirect will confirm the authenticated state.
+      if (mounted) context.go('/home');
     } catch (e) {
       if (!mounted) return;
       final message = e is AppException

@@ -14,7 +14,7 @@ ListingSummaryDto _$ListingSummaryDtoFromJson(Map<String, dynamic> json) =>
       listingType: $enumDecode(_$ListingTypeEnumMap, json['listingType']),
       status: $enumDecode(_$ListingStatusEnumMap, json['status']),
       pricePerDay: (json['pricePerDay'] as num).toDouble(),
-      depositAmount: (json['depositAmount'] as num).toDouble(),
+      depositAmount: (json['depositAmount'] as num?)?.toDouble(),
       categoryName: json['categoryName'] as String?,
       schoolName: json['schoolName'] as String?,
       areaName: json['areaName'] as String?,

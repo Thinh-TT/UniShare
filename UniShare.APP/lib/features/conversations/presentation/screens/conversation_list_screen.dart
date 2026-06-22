@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/app_colors.dart';
+import '../../../../config/app_config.dart';
 import '../../../../shared/widgets/loading_state.dart';
 import '../../../../shared/widgets/error_state.dart';
 import '../../../../shared/widgets/empty_state.dart';
@@ -17,6 +18,7 @@ class ConversationListScreen extends ConsumerWidget {
     final conversationsAsync = ref.watch(
       conversationsProvider(const ConversationListParams()),
     );
+    final mediaBaseUrl = ref.watch(appConfigProvider).mediaBaseUrl;
 
     return Scaffold(
       backgroundColor: AppColors.white,
@@ -63,6 +65,7 @@ class ConversationListScreen extends ConsumerWidget {
               itemBuilder: (context, index) {
                 return _ConversationCard(
                   conversation: conversations[index],
+                  mediaBaseUrl: mediaBaseUrl,
                   onTap: () {
                     context.push('/chat/${conversations[index].id}');
                   },
@@ -80,10 +83,12 @@ class ConversationListScreen extends ConsumerWidget {
 class _ConversationCard extends StatelessWidget {
   final ConversationDto conversation;
   final VoidCallback onTap;
+  final String mediaBaseUrl;
 
   const _ConversationCard({
     required this.conversation,
     required this.onTap,
+    required this.mediaBaseUrl,
   });
 
   String _formatRelativeTime(DateTime dateTime) {
@@ -112,6 +117,7 @@ class _ConversationCard extends StatelessWidget {
               avatarUrl: conversation.otherParticipantAvatarUrl,
               fullName: conversation.otherParticipantName,
               size: 48,
+              mediaBaseUrl: mediaBaseUrl,
             ),
             const SizedBox(width: 12),
 

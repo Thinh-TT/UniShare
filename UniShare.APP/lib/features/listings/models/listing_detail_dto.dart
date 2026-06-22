@@ -5,6 +5,7 @@ import '../../users/models/user_summary_dto.dart';
 import '../../reference/models/category_dto.dart';
 import '../../reference/models/school_dto.dart';
 import '../../reference/models/area_dto.dart';
+import '../../reference/models/tag_dto.dart';
 import '../../images/models/listing_image_dto.dart';
 
 part 'listing_detail_dto.g.dart';
@@ -17,12 +18,12 @@ class ListingDetailDto {
   final ListingType listingType;
   final ListingStatus status;
   final double pricePerDay;
-  final double depositAmount;
+  final double? depositAmount;
   final String? conditionNote;
   final CategoryDto? category;
   final SchoolDto? school;
   final AreaDto? area;
-  final List<String>? tags;
+  final List<TagDto>? tags;
   final List<ListingImageDto>? images;
   final UserSummaryDto? owner;
   final int viewCount;
@@ -38,7 +39,7 @@ class ListingDetailDto {
     required this.listingType,
     required this.status,
     required this.pricePerDay,
-    required this.depositAmount,
+    this.depositAmount,
     this.conditionNote,
     this.category,
     this.school,

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:signalr_netcore/ihub_protocol.dart' show MessageHeaders;
 import 'package:signalr_netcore/signalr_client.dart';
 import '../../config/app_config.dart';
 import 'token_storage.dart';
@@ -52,6 +53,8 @@ class SignalRService {
           options: HttpConnectionOptions(
             accessTokenFactory: () async => token,
             transport: HttpTransportType.WebSockets,
+            headers: MessageHeaders()
+              ..setHeaderValue('ngrok-skip-browser-warning', 'true'),
           ),
         )
         .withAutomaticReconnect()

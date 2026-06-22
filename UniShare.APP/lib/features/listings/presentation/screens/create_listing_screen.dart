@@ -32,6 +32,20 @@ class _CreateListingScreenState extends ConsumerState<CreateListingScreen> {
   bool _initialized = false;
 
   @override
+  void initState() {
+    super.initState();
+    // Reset form to create mode — the shared listingFormProvider may
+    // still be in edit mode from a previous EditListingScreen visit.
+    ref.read(listingFormProvider.notifier).reset();
+    _titleController.clear();
+    _descriptionController.clear();
+    _priceController.clear();
+    _depositController.clear();
+    _conditionController.clear();
+    _tagController.clear();
+  }
+
+  @override
   void dispose() {
     _titleController.dispose();
     _descriptionController.dispose();
@@ -362,6 +376,15 @@ class _CreateListingScreenState extends ConsumerState<CreateListingScreen> {
                 keyboardType: TextInputType.number,
                 enabled: !isBorrow,
               ),
+              if (formState.priceError != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 4, left: 4),
+                  child: Text(
+                    formState.priceError!,
+                    style: const TextStyle(
+                        color: AppColors.danger, fontSize: 12),
+                  ),
+                ),
               const SizedBox(height: 16),
 
               // Deposit
@@ -372,6 +395,15 @@ class _CreateListingScreenState extends ConsumerState<CreateListingScreen> {
                   controller: _depositController,
                   keyboardType: TextInputType.number,
                 ),
+              if (!isBorrow && formState.depositError != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 4, left: 4),
+                  child: Text(
+                    formState.depositError!,
+                    style: const TextStyle(
+                        color: AppColors.danger, fontSize: 12),
+                  ),
+                ),
               if (!isBorrow) const SizedBox(height: 16),
 
               // Condition note
@@ -381,6 +413,15 @@ class _CreateListingScreenState extends ConsumerState<CreateListingScreen> {
                 controller: _conditionController,
                 maxLines: 2,
               ),
+              if (formState.conditionNoteError != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 4, left: 4),
+                  child: Text(
+                    formState.conditionNoteError!,
+                    style: const TextStyle(
+                        color: AppColors.danger, fontSize: 12),
+                  ),
+                ),
               const SizedBox(height: 16),
 
               // Description
@@ -498,6 +539,15 @@ class _CreateListingScreenState extends ConsumerState<CreateListingScreen> {
                   ),
                 ],
               ),
+              if (formState.tagsError != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 4, left: 4),
+                  child: Text(
+                    formState.tagsError!,
+                    style: const TextStyle(
+                        color: AppColors.danger, fontSize: 12),
+                  ),
+                ),
               if (formState.tags.isNotEmpty) ...[
                 const SizedBox(height: 8),
                 Wrap(

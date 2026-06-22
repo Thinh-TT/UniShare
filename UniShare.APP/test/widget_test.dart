@@ -27,9 +27,13 @@ void main() {
   group('App startup', () {
     testWidgets('renders splash screen on launch', (tester) async {
       await pumpApp(tester);
+      // Let splash screen render (use pump() to avoid timer deadlock)
+      await tester.pump();
       // Should show the UniShare logo/name
       expect(find.text('UniShare'), findsOneWidget);
       expect(find.text('Chia sẻ đồ dùng sinh viên'), findsOneWidget);
+      // Pump through pending async work to clean up timers
+      await tester.pump(const Duration(seconds: 5));
     });
   });
 
@@ -109,10 +113,15 @@ void main() {
     });
 
     testWidgets('UserAvatar renders initials', (tester) async {
+      const mediaBaseUrl = 'http://localhost:5056';
       await tester.pumpWidget(
-        const MaterialApp(
+        MaterialApp(
           home: Scaffold(
-            body: UserAvatar(fullName: 'Nguyen Van A', size: 40),
+            body: UserAvatar(
+              fullName: 'Nguyen Van A',
+              size: 40,
+              mediaBaseUrl: mediaBaseUrl,
+            ),
           ),
         ),
       );
@@ -121,13 +130,15 @@ void main() {
     });
 
     testWidgets('UserAvatar with reputation', (tester) async {
+      const mediaBaseUrl = 'http://localhost:5056';
       await tester.pumpWidget(
-        const MaterialApp(
+        MaterialApp(
           home: Scaffold(
             body: UserAvatar(
               fullName: 'Nguyen Van A',
               reputationScore: 95.5,
               size: 40,
+              mediaBaseUrl: mediaBaseUrl,
             ),
           ),
         ),
@@ -155,7 +166,17 @@ void main() {
 
   group('Theme colors', () {
     testWidgets('uses green primary and white surface', (tester) async {
-      await pumpApp(tester);
+      // Test theme directly — don't need the full app to settle
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            appConfigProvider.overrideWithValue(AppConfig.dev),
+          ],
+          child: const UniShareApp(),
+        ),
+      );
+      // Pump one frame to build the widget tree
+      await tester.pump();
       final context = tester.element(find.byType(UniShareApp));
       final theme = Theme.of(context);
       // Verify color scheme has green primary configured
@@ -164,6 +185,8 @@ void main() {
       expect(theme.scaffoldBackgroundColor, isNotNull);
       // Theme should use Material 3
       expect(theme.useMaterial3, isTrue);
+      // Clean up pending timers from splash screen to avoid leaking state
+      await tester.pump(const Duration(seconds: 5));
     });
   });
 }

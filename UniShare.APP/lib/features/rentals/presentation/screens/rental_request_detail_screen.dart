@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../config/app_colors.dart';
+import '../../../../config/app_config.dart';
+import '../../../../shared/utils/image_url_resolver.dart';
 import '../../../../shared/widgets/status_badge.dart';
 import '../../../../shared/widgets/loading_state.dart';
 import '../../../../shared/widgets/error_state.dart';
@@ -120,7 +122,8 @@ class _RentalRequestDetailScreenState
                         child: request.listingImageUrl != null &&
                                 request.listingImageUrl!.isNotEmpty
                             ? CachedNetworkImage(
-                                imageUrl: request.listingImageUrl!,
+                                imageUrl: resolveImageUrl(
+                                    ref.read(appConfigProvider).mediaBaseUrl, request.listingImageUrl),
                                 fit: BoxFit.cover,
                                 errorWidget: (_, __, ___) => const Icon(
                                   Icons.image,
@@ -577,6 +580,7 @@ class _RentalRequestDetailScreenState
               avatarUrl: avatarUrl,
               fullName: name,
               size: 40,
+              mediaBaseUrl: ref.read(appConfigProvider).mediaBaseUrl,
             ),
             const SizedBox(width: 12),
             Expanded(

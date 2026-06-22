@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/app_colors.dart';
+import '../../../../config/app_config.dart';
 import '../../../../core/errors/app_exception.dart';
 import '../../../../shared/widgets/app_bottom_sheet.dart';
 import '../../../../shared/widgets/app_button.dart';
@@ -269,6 +270,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                   fullName: profile.fullName,
                   reputationScore: profile.reputationScore,
                   size: 80,
+                  mediaBaseUrl: ref.read(appConfigProvider).mediaBaseUrl,
                 ),
               ),
               const SizedBox(height: 8),

@@ -88,8 +88,8 @@ class _EditListingScreenState extends ConsumerState<EditListingScreen> {
     _priceController.text = listing.pricePerDay > 0
         ? listing.pricePerDay.toStringAsFixed(0)
         : '';
-    _depositController.text = listing.depositAmount > 0
-        ? listing.depositAmount.toStringAsFixed(0)
+    _depositController.text = (listing.depositAmount ?? 0) > 0
+        ? listing.depositAmount!.toStringAsFixed(0)
         : '';
     _conditionController.text = listing.conditionNote ?? '';
   }
@@ -360,7 +360,8 @@ class _EditListingScreenState extends ConsumerState<EditListingScreen> {
               ref.invalidate(listingDetailProvider(widget.listingId)),
         ),
         data: (listing) {
-          _loadData(listing);
+          // Delay provider modification to avoid modifying during build.
+          Future.microtask(() => _loadData(listing));
           final formState = ref.watch(listingFormProvider);
           final isBorrow = formState.listingType == ListingType.borrow;
 

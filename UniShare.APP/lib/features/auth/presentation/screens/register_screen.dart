@@ -41,6 +41,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     if (trimmed.length < 2) {
       return 'Họ tên phải có ít nhất 2 ký tự';
     }
+    final nameRegex = RegExp(r'^[\p{L}\s]+$', unicode: true);
+    if (!nameRegex.hasMatch(trimmed)) {
+      return 'Họ tên chỉ được chứa chữ cái và khoảng trắng';
+    }
     return null;
   }
 

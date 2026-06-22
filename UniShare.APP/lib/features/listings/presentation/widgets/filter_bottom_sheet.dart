@@ -108,24 +108,12 @@ class _FilterBottomSheetState extends ConsumerState<FilterBottomSheet> {
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Drag handle
-          Center(
-            child: Container(
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: AppColors.neutral200,
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
-
-          // Header
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header
           Text(
             'Bộ lọc',
             style: Theme.of(context).textTheme.titleLarge,
@@ -341,6 +329,7 @@ class _FilterBottomSheetState extends ConsumerState<FilterBottomSheet> {
           ),
           const SizedBox(height: 8),
         ],
+      ),
       ),
     );
   }

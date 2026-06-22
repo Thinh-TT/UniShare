@@ -40,12 +40,17 @@ var app = builder.Build();
 // Global exception handling
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Docker"))
 {
     app.UseSwaggerWithUI();
 }
 
-app.UseHttpsRedirection();
+// HTTPS redirection only outside Docker — the container listens on HTTP,
+// and ngrok terminates TLS externally.
+if (!app.Environment.IsEnvironment("Docker"))
+{
+    app.UseHttpsRedirection();
+}
 app.UseStaticFiles();
 app.UseCors("UniShareMobile");
 app.UseAuthentication();
@@ -54,8 +59,8 @@ app.MapControllers();
 app.MapHub<ChatHub>("/hubs/chat");
 app.MapHub<NotificationHub>("/hubs/notifications");
 
-// Seed admin user in development
-if (app.Environment.IsDevelopment())
+// Seed admin user in development and Docker environments
+if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Docker"))
 {
     using var scope = app.Services.CreateScope();
     var seeder = scope.ServiceProvider.GetRequiredService<AdminSeedService>();

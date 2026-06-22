@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/app_colors.dart';
+import '../../../../config/app_config.dart';
 import '../../../../shared/widgets/listing_card.dart';
 import '../../../../shared/widgets/loading_state.dart';
 import '../../../../shared/widgets/empty_state.dart';
@@ -90,6 +91,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final isAuthenticated = authState is AuthAuthenticated;
     final unreadCountAsync = ref.watch(unreadCountProvider);
     final unreadCount = unreadCountAsync.valueOrNull ?? 0;
+    final mediaBaseUrl = ref.watch(appConfigProvider).mediaBaseUrl;
 
     return Scaffold(
       backgroundColor: AppColors.white,
@@ -289,6 +291,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       return ListingCard(
                         listing: listing,
                         onTap: () => _navigateToDetail(listing.id),
+                        mediaBaseUrl: mediaBaseUrl,
                       );
                     },
                   ),

@@ -17,7 +17,10 @@ class ApiClient {
       baseUrl: appConfig.apiBaseUrl,
       connectTimeout: const Duration(seconds: 15),
       receiveTimeout: const Duration(seconds: 15),
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
     ));
 
     _dio.interceptors.add(
@@ -130,6 +133,13 @@ class ApiClient {
     required T Function(Map<String, dynamic>) fromJsonT,
   }) async {
     final response = await _dio.patch(path, data: data);
+
+    // Handle 204 No Content and other empty responses gracefully.
+    // These return a String or null body that cannot be parsed as Map.
+    if (response.data == null || response.data is! Map<String, dynamic>) {
+      return ApiResponse<T>(data: null);
+    }
+
     return ApiResponse.fromJson(response.data, (json) {
       if (json == null) return null as T;
       return fromJsonT(json as Map<String, dynamic>);
@@ -166,5 +176,20 @@ class ApiClient {
       if (json == null) return null as T;
       return fromJsonT(json as Map<String, dynamic>);
     });
+  }
+
+  /// Upload multipart form data, returning raw JSON.
+  /// Use when the response `data` field is a List (not a Map),
+  /// e.g. ApiResponse<List<T>>.
+  Future<Map<String, dynamic>> postMultipartRaw({
+    required String path,
+    required FormData formData,
+  }) async {
+    final response = await _dio.post(
+      path,
+      data: formData,
+      options: Options(contentType: 'multipart/form-data'),
+    );
+    return response.data as Map<String, dynamic>;
   }
 }

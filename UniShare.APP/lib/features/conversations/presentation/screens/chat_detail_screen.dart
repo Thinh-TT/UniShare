@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../config/app_colors.dart';
+import '../../../../config/app_config.dart';
 import '../../../../shared/widgets/loading_state.dart';
 import '../../../../shared/widgets/error_state.dart';
 import '../../../../shared/widgets/empty_state.dart';
@@ -104,6 +105,7 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
+    final mediaBaseUrl = ref.watch(appConfigProvider).mediaBaseUrl;
     if (authState is! AuthAuthenticated) {
       return const Scaffold(
         body: Center(child: Text('Vui lòng đăng nhập để xem tin nhắn')),
@@ -147,6 +149,7 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
                       avatarUrl: otherAvatarUrl,
                       fullName: otherName,
                       size: 32,
+                      mediaBaseUrl: mediaBaseUrl,
                     ),
                     const SizedBox(width: 8),
                     Expanded(

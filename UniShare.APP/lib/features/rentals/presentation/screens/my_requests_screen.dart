@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/app_colors.dart';
+import '../../../../config/app_config.dart';
+import '../../../../shared/utils/image_url_resolver.dart';
 import '../../../../shared/widgets/status_badge.dart';
 import '../../../../shared/widgets/loading_state.dart';
 import '../../../../shared/widgets/empty_state.dart';
@@ -215,7 +217,7 @@ class _MyRequestsScreenState extends ConsumerState<MyRequestsScreen> {
                   child: request.listingImageUrl != null &&
                           request.listingImageUrl!.isNotEmpty
                       ? Image.network(
-                          request.listingImageUrl!,
+                          resolveImageUrl(ref.read(appConfigProvider).mediaBaseUrl, request.listingImageUrl),
                           fit: BoxFit.cover,
                           errorBuilder: (_, __, ___) => const Icon(
                             Icons.image,
@@ -268,6 +270,7 @@ class _MyRequestsScreenState extends ConsumerState<MyRequestsScreen> {
                           avatarUrl: request.otherParticipantAvatarUrl,
                           fullName: request.otherParticipantName,
                           size: 20,
+                          mediaBaseUrl: ref.read(appConfigProvider).mediaBaseUrl,
                         ),
                         const SizedBox(width: 6),
                         Expanded(

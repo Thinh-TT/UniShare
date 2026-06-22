@@ -31,3 +31,8 @@ Thumbs.db
 # Secrets
 appsettings.Staging.json
 appsettings.Production.json
+appsettings.Docker.Local.json
+
+# ngrok (contains user-specific tunnel config)
+ngrok.yml
+.env

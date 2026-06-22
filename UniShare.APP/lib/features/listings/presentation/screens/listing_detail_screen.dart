@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../config/app_colors.dart';
+import '../../../../config/app_config.dart';
+import '../../../../shared/utils/image_url_resolver.dart';
 import '../../../../shared/widgets/loading_state.dart';
 import '../../../../shared/widgets/error_state.dart';
 import '../../../../shared/widgets/status_badge.dart';
@@ -128,6 +130,7 @@ class _ListingDetailScreenState extends ConsumerState<ListingDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final detailAsync = ref.watch(listingDetailProvider(widget.listingId));
+    final mediaBaseUrl = ref.watch(appConfigProvider).mediaBaseUrl;
     final authState = ref.watch(authProvider);
     final currentUserId =
         authState is AuthAuthenticated ? authState.user.id : null;
@@ -191,8 +194,10 @@ class _ListingDetailScreenState extends ConsumerState<ListingDetailScreen> {
                                 itemCount: listing.images!.length,
                                 itemBuilder: (context, index) {
                                   return CachedNetworkImage(
-                                    imageUrl:
+                                    imageUrl: resolveImageUrl(
+                                        mediaBaseUrl,
                                         listing.images![index].imageUrl,
+                                    ),
                                     fit: BoxFit.cover,
                                     width: double.infinity,
                                     placeholder: (_, __) => Container(
@@ -327,7 +332,8 @@ class _ListingDetailScreenState extends ConsumerState<ListingDetailScreen> {
                                   ),
                                 ),
                                 if (!isBorrow &&
-                                    listing.depositAmount > 0) ...[
+                                    listing.depositAmount != null &&
+                                    listing.depositAmount! > 0) ...[
                                   const SizedBox(width: 16),
                                   Container(
                                     width: 1,
@@ -336,7 +342,7 @@ class _ListingDetailScreenState extends ConsumerState<ListingDetailScreen> {
                                   ),
                                   const SizedBox(width: 16),
                                   Text(
-                                    'Cọc: ${listing.depositAmount.toStringAsFixed(0)}đ',
+                                    'Cọc: ${listing.depositAmount!.toStringAsFixed(0)}đ',
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyMedium
@@ -372,7 +378,7 @@ class _ListingDetailScreenState extends ConsumerState<ListingDetailScreen> {
                                                   12),
                                         ),
                                         child: Text(
-                                          '#$tag',
+                                          '#${tag.name}',
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall
@@ -513,6 +519,7 @@ class _ListingDetailScreenState extends ConsumerState<ListingDetailScreen> {
                                               listing.owner!
                                                   .reputationScore,
                                           size: 48,
+                                          mediaBaseUrl: mediaBaseUrl,
                                         ),
                                         const SizedBox(width: 12),
                                         Expanded(

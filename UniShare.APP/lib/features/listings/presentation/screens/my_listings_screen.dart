@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/app_colors.dart';
+import '../../../../config/app_config.dart';
 import '../../../../core/enums/listing_status.dart';
 import '../../../../shared/widgets/listing_card.dart';
 import '../../../../shared/widgets/loading_state.dart';
@@ -93,6 +94,7 @@ class _MyListingsScreenState extends ConsumerState<MyListingsScreen> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(myListingsProvider);
+    final mediaBaseUrl = ref.watch(appConfigProvider).mediaBaseUrl;
 
     return Scaffold(
       backgroundColor: AppColors.white,
@@ -184,6 +186,7 @@ class _MyListingsScreenState extends ConsumerState<MyListingsScreen> {
                                       listing: listing,
                                       onTap: () =>
                                           _navigateToEdit(listing.id),
+                                      mediaBaseUrl: mediaBaseUrl,
                                     ),
                                     // Status badge + actions
                                     Padding(

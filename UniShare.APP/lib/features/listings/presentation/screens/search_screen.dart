@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/app_colors.dart';
+import '../../../../config/app_config.dart';
 import '../../../../shared/widgets/listing_card.dart';
 import '../../../../shared/widgets/loading_state.dart';
 import '../../../../shared/widgets/empty_state.dart';
@@ -113,6 +114,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     final hasKeyword = _filters.keyword != null && _filters.keyword!.isNotEmpty;
+    final mediaBaseUrl = ref.watch(appConfigProvider).mediaBaseUrl;
     final listingsAsync = _hasSearched
         ? ref.watch(listingsProvider(_filters))
         : null;
@@ -292,6 +294,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                   listing: listing,
                                   onTap: () => _navigateToDetail(
                                       listing.id),
+                                  mediaBaseUrl: mediaBaseUrl,
                                 );
                               },
                             ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/app_colors.dart';
+import '../../../../config/app_config.dart';
 import '../../../../shared/widgets/app_button.dart';
 import '../../../../shared/widgets/user_avatar.dart';
 import '../../models/create_review_request.dart';
@@ -131,6 +132,7 @@ class _ReviewFormScreenState extends ConsumerState<ReviewFormScreen> {
                     avatarUrl: widget.revieweeAvatarUrl,
                     fullName: widget.revieweeName!,
                     size: 48,
+                    mediaBaseUrl: ref.read(appConfigProvider).mediaBaseUrl,
                   ),
                   const SizedBox(width: 12),
                   Expanded(

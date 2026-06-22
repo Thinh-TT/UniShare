@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../config/app_colors.dart';
 import '../../features/listings/models/listing_summary_dto.dart';
+import '../utils/image_url_resolver.dart';
 import 'user_avatar.dart';
 
 /// Card widget displaying a listing summary.
 class ListingCard extends StatelessWidget {
   final ListingSummaryDto listing;
   final VoidCallback? onTap;
+  final String mediaBaseUrl;
 
   const ListingCard({
     super.key,
     required this.listing,
     this.onTap,
+    required this.mediaBaseUrl,
   });
 
   @override
@@ -35,7 +38,7 @@ class ListingCard extends StatelessWidget {
                 height: 180,
                 width: double.infinity,
                 child: CachedNetworkImage(
-                  imageUrl: listing.coverImageUrl!,
+                  imageUrl: resolveImageUrl(mediaBaseUrl, listing.coverImageUrl),
                   fit: BoxFit.cover,
                   placeholder: (_, __) => Container(
                     color: AppColors.neutral100,
@@ -131,6 +134,7 @@ class ListingCard extends StatelessWidget {
                           fullName: listing.owner!.fullName,
                           reputationScore: listing.owner!.reputationScore,
                           size: 28,
+                          mediaBaseUrl: mediaBaseUrl,
                         ),
                         const SizedBox(width: 8),
                         Expanded(
