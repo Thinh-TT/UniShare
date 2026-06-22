@@ -206,11 +206,11 @@ Task board này bám theo:
 
 | ID          | Task                                                          | Use Case | Status | Priority | Dependency                 | Definition of Done                          |
 | ----------- | ------------------------------------------------------------- | -------- | ------ | -------- | -------------------------- | ------------------------------------------- |
-| `BUILD-001` | Cấu hình Android app id, app name, icon, splash               | N/A      | `[ ]`  | P0       | `SETUP-008`, `FE-CORE-001` | App cài đặt hiển thị đúng tên UniShare      |
-| `BUILD-002` | Cấu hình permission Android: internet, camera/gallery nếu cần | N/A      | `[ ]`  | P0       | `FE-LIST-006`              | Upload ảnh hoạt động trên thiết bị          |
-| `BUILD-003` | Cấu hình signing key cho debug/release                        | N/A      | `[ ]`  | P0       | `BUILD-001`                | Có hướng dẫn build release APK              |
-| `BUILD-004` | Build debug APK                                               | N/A      | `[ ]`  | P0       | `TEST-FE-009`              | `flutter build apk --debug` thành công      |
-| `BUILD-005` | Build release APK                                             | N/A      | `[ ]`  | P0       | `BUILD-003`, `TEST-FE-009` | `flutter build apk --release` thành công    |
+| `BUILD-001` | Cấu hình Android app id, app name, icon, splash               | N/A      | `[x]`  | P0       | `SETUP-008`, `FE-CORE-001` | App cài đặt hiển thị đúng tên UniShare      |
+| `BUILD-002` | Cấu hình permission Android: internet, camera/gallery nếu cần | N/A      | `[x]`  | P0       | `FE-LIST-006`              | Upload ảnh hoạt động trên thiết bị          |
+| `BUILD-003` | Cấu hình signing key cho debug/release                        | N/A      | `[x]`  | P0       | `BUILD-001`                | Có hướng dẫn build release APK              |
+| `BUILD-004` | Build debug APK                                               | N/A      | `[x]`  | P0       | `TEST-FE-009`              | `flutter build apk --debug` thành công      |
+| `BUILD-005` | Build release APK                                             | N/A      | `[x]`  | P0       | `BUILD-003`, `TEST-FE-009` | `flutter build apk --release` thành công    |
 | `BUILD-006` | Smoke test APK release trên thiết bị thật                     | MVP flow | `[ ]`  | P0       | `BUILD-005`                | Cài được APK, login và flow chính hoạt động |
 | `BUILD-007` | Chuẩn bị release notes và danh sách known issues              | N/A      | `[ ]`  | P1       | `BUILD-006`                | Có ghi chú phiên bản MVP và lỗi còn lại     |
 
