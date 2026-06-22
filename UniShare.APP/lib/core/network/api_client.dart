@@ -101,6 +101,15 @@ class ApiClient {
     return response.data as Map<String, dynamic>;
   }
 
+  /// Perform a PUT request returning raw JSON.
+  Future<Map<String, dynamic>> putRaw({
+    required String path,
+    Map<String, dynamic>? data,
+  }) async {
+    final response = await _dio.put(path, data: data);
+    return response.data as Map<String, dynamic>;
+  }
+
   /// Perform a PUT request with a JSON body.
   Future<ApiResponse<T>> put<T>({
     required String path,

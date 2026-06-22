@@ -15,6 +15,8 @@ class AppInput extends StatelessWidget {
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final String? errorText;
+  final TextInputAction? textInputAction;
+  final ValueChanged<String>? onFieldSubmitted;
 
   const AppInput({
     super.key,
@@ -31,6 +33,8 @@ class AppInput extends StatelessWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.errorText,
+    this.textInputAction,
+    this.onFieldSubmitted,
   });
 
   @override
@@ -57,6 +61,8 @@ class AppInput extends StatelessWidget {
           onChanged: onChanged,
           enabled: enabled,
           validator: validator,
+          textInputAction: textInputAction,
+          onFieldSubmitted: onFieldSubmitted,
           decoration: InputDecoration(
             hintText: hintText,
             prefixIcon: prefixIcon,

@@ -157,10 +157,10 @@ Task board này bám theo:
 
 | ID            | Task                       | Use Case           | Status | Priority | Dependency                    | Definition of Done                 |
 | ------------- | -------------------------- | ------------------ | ------ | -------- | ----------------------------- | ---------------------------------- |
-| `FE-AUTH-001` | Build Splash/Onboarding    | `FR-002`           | `[ ]`  | P0       | `FE-CORE-002`                 | Kiểm tra token và điều hướng đúng  |
-| `FE-AUTH-002` | Build Login screen         | `FR-002`           | `[ ]`  | P0       | `FE-CORE-003`                 | Login thành công lưu token         |
-| `FE-AUTH-003` | Build Register screen      | `FR-001`           | `[ ]`  | P0       | `FE-AUTH-002`                 | Đăng ký và quay về login/main flow |
-| `FE-PROF-001` | Build Profile/Edit Profile | `FR-003`, `FR-004` | `[ ]`  | P0       | `FE-AUTH-002`, `API-USER-002` | Xem/sửa hồ sơ, chọn school/area    |
+| `FE-AUTH-001` | Build Splash/Onboarding    | `FR-002`           | `[x]`  | P0       | `FE-CORE-002`                 | Kiểm tra token và điều hướng đúng  |
+| `FE-AUTH-002` | Build Login screen         | `FR-002`           | `[x]`  | P0       | `FE-CORE-003`                 | Login thành công lưu token         |
+| `FE-AUTH-003` | Build Register screen      | `FR-001`           | `[x]`  | P0       | `FE-AUTH-002`                 | Đăng ký và quay về login/main flow |
+| `FE-PROF-001` | Build Profile/Edit Profile | `FR-003`, `FR-004` | `[x]`  | P0       | `FE-AUTH-002`, `API-USER-002` | Xem/sửa hồ sơ, chọn school/area    |
 
 ### 9.2. Listing Discovery Và Management
 
