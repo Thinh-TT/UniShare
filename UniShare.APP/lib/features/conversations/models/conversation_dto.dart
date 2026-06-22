@@ -1,16 +1,19 @@
 import 'package:json_annotation/json_annotation.dart';
-import '../../users/models/user_summary_dto.dart';
 
 part 'conversation_dto.g.dart';
 
+/// Matches backend ConversationSummaryDto (used for list endpoint).
 @JsonSerializable()
 class ConversationDto {
   final String id;
   final String listingId;
-  final String? listingTitle;
-  final UserSummaryDto owner;
-  final UserSummaryDto requester;
-  final String? lastMessage;
+  final String listingTitle;
+  final String? listingCoverImageUrl;
+  final String otherParticipantId;
+  final String otherParticipantName;
+  final String? otherParticipantAvatarUrl;
+  final String? lastMessageContent;
+  final String? lastMessageSenderId;
   final DateTime? lastMessageAt;
   final int unreadCount;
   final DateTime createdAt;
@@ -18,10 +21,13 @@ class ConversationDto {
   const ConversationDto({
     required this.id,
     required this.listingId,
-    this.listingTitle,
-    required this.owner,
-    required this.requester,
-    this.lastMessage,
+    required this.listingTitle,
+    this.listingCoverImageUrl,
+    required this.otherParticipantId,
+    required this.otherParticipantName,
+    this.otherParticipantAvatarUrl,
+    this.lastMessageContent,
+    this.lastMessageSenderId,
     this.lastMessageAt,
     required this.unreadCount,
     required this.createdAt,

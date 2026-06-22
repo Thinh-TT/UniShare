@@ -99,28 +99,39 @@ class SignalRService {
   }
 
   /// Send a message via SignalR.
+  ///
+  /// Backend ChatHub.SendMessage expects two primitive args:
+  /// (Guid conversationId, string content).
   Future<void> sendMessage({
     required String conversationId,
     required String content,
   }) async {
     if (_hubConnection == null || !_isConnected) return;
-    await _hubConnection!.invoke('SendMessage', args: [
-      {'conversationId': conversationId, 'content': content},
-    ]);
+    try {
+      await _hubConnection!.invoke('SendMessage', args: [
+        conversationId,
+        content,
+      ]);
+    } catch (_) {
+      // SignalR send failed — caller should fall back to HTTP
+      rethrow;
+    }
   }
 
   /// Mark a conversation's messages as read.
+  ///
+  /// Backend ChatHub.MarkAsRead expects one primitive arg:
+  /// (Guid conversationId).
   Future<void> markAsRead({
     required String conversationId,
-    required String lastReadMessageId,
   }) async {
     if (_hubConnection == null || !_isConnected) return;
-    await _hubConnection!.invoke('MarkAsRead', args: [
-      {
-        'conversationId': conversationId,
-        'lastReadMessageId': lastReadMessageId,
-      },
-    ]);
+    try {
+      await _hubConnection!
+          .invoke('MarkAsRead', args: [conversationId]);
+    } catch (_) {
+      // Non-critical — messages will be marked read on next HTTP call
+    }
   }
 
   /// Disconnect from the hub.

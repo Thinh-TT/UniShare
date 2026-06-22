@@ -78,7 +78,7 @@ class MyListingsNotifier extends StateNotifier<MyListingsState> {
         listings: response.items,
         currentPage: 1,
         isLoading: false,
-        hasMore: response.page < response.totalPages,
+        hasMore: response.hasMore,
       );
     } on Exception catch (e) {
       state = state.copyWith(
@@ -106,7 +106,7 @@ class MyListingsNotifier extends StateNotifier<MyListingsState> {
         listings: [...state.listings, ...response.items],
         currentPage: nextPage,
         isLoadingMore: false,
-        hasMore: nextPage < response.totalPages,
+        hasMore: response.hasMore,
       );
     } on Exception catch (e) {
       state = state.copyWith(

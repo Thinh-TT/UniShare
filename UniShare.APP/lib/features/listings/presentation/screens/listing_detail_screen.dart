@@ -10,6 +10,8 @@ import '../../../../shared/widgets/user_avatar.dart';
 import '../../../../shared/widgets/login_required_modal.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../auth/presentation/providers/auth_state.dart';
+import '../../../conversations/presentation/providers/conversations_provider.dart'
+    show conversationsRepositoryProvider;
 import '../../models/listing_detail_dto.dart';
 import '../../../../core/enums/listing_status.dart';
 import '../../../../core/enums/listing_type.dart';
@@ -29,6 +31,8 @@ class ListingDetailScreen extends ConsumerStatefulWidget {
 class _ListingDetailScreenState extends ConsumerState<ListingDetailScreen> {
   final _pageController = PageController();
   int _currentImageIndex = 0;
+  bool _isUpvoted = false;
+  int _upvoteCount = 0;
 
   @override
   void dispose() {
@@ -36,7 +40,7 @@ class _ListingDetailScreenState extends ConsumerState<ListingDetailScreen> {
     super.dispose();
   }
 
-  Future<void> _toggleUpvote(ListingDetailDto listing) async {
+  Future<void> _toggleUpvote() async {
     final authState = ref.read(authProvider);
     if (authState is! AuthAuthenticated) {
       if (mounted) {
@@ -45,13 +49,27 @@ class _ListingDetailScreenState extends ConsumerState<ListingDetailScreen> {
       return;
     }
 
-    // We don't track per-user upvote state on the detail DTO directly,
-    // so we just toggle and refresh. The backend handles idempotency.
-    // ignore: unused_label
-    await ref
-        .read(listingsRepositoryProvider)
-        .toggleUpvote(widget.listingId, false);
-    ref.invalidate(listingDetailProvider(widget.listingId));
+    try {
+      final response = await ref
+          .read(listingsRepositoryProvider)
+          .toggleUpvote(widget.listingId, _isUpvoted);
+
+      if (mounted) {
+        setState(() {
+          _isUpvoted = response.isUpvoted;
+          _upvoteCount = response.upvoteCount;
+        });
+      }
+
+      // Invalidate the detail provider so other consumers refresh
+      ref.invalidate(listingDetailProvider(widget.listingId));
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Không thể thực hiện: $e')),
+        );
+      }
+    }
   }
 
   void _showLoginRequired() {
@@ -73,21 +91,33 @@ class _ListingDetailScreenState extends ConsumerState<ListingDetailScreen> {
       return;
     }
     // Navigate to rental request form (Phase 5.3)
-    // For now, use a placeholder navigation
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Chức năng sẽ có trong bản cập nhật tiếp theo')),
+      const SnackBar(
+          content: Text('Chức năng sẽ có trong bản cập nhật tiếp theo')),
     );
   }
 
-  void _navigateToChat() {
+  Future<void> _navigateToChat() async {
     final authState = ref.read(authProvider);
     if (authState is! AuthAuthenticated) {
       _showLoginRequired();
       return;
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Chức năng Chat sẽ có trong bản cập nhật tiếp theo')),
-    );
+
+    try {
+      final repo = ref.read(conversationsRepositoryProvider);
+      final conversation =
+          await repo.createOrOpenConversation(widget.listingId);
+      if (mounted) {
+        context.push('/chat/${conversation.id}');
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Không thể bắt đầu trò chuyện: $e')),
+        );
+      }
+    }
   }
 
   @override
@@ -116,6 +146,15 @@ class _ListingDetailScreenState extends ConsumerState<ListingDetailScreen> {
           final isOwner = currentUserId == listing.owner?.id;
           final isAvailable = listing.status == ListingStatus.available;
           final isBorrow = listing.listingType == ListingType.borrow;
+
+          // Initialize upvote state from detail data on first load.
+          // We don't get per-user isUpvoted from the detail DTO, so we
+          // track it locally via the toggle response.
+          if (_upvoteCount == 0 && listing.upvoteCount > 0) {
+            _upvoteCount = listing.upvoteCount;
+          } else if (_upvoteCount == 0) {
+            _upvoteCount = listing.upvoteCount;
+          }
 
           return Column(
             children: [
@@ -537,7 +576,7 @@ class _ListingDetailScreenState extends ConsumerState<ListingDetailScreen> {
                                     color: AppColors.neutral500),
                                 const SizedBox(width: 4),
                                 Text(
-                                  '${listing.upvoteCount}',
+                                  '$_upvoteCount',
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodySmall
@@ -594,8 +633,11 @@ class _ListingDetailScreenState extends ConsumerState<ListingDetailScreen> {
                         // Upvote button
                         _ActionIconButton(
                           icon: Icons.arrow_upward,
-                          label: '${listing.upvoteCount}',
-                          onTap: () => _toggleUpvote(listing),
+                          iconColor: _isUpvoted
+                              ? AppColors.green
+                              : AppColors.neutral700,
+                          label: '$_upvoteCount',
+                          onTap: _toggleUpvote,
                         ),
                         const SizedBox(width: 4),
                         // Comment button
@@ -605,12 +647,13 @@ class _ListingDetailScreenState extends ConsumerState<ListingDetailScreen> {
                           onTap: _navigateToComments,
                         ),
                         const SizedBox(width: 4),
-                        // Chat button
-                        _ActionIconButton(
-                          icon: Icons.message_outlined,
-                          label: 'Nhắn tin',
-                          onTap: _navigateToChat,
-                        ),
+                        // Chat button (hidden for owner)
+                        if (!isOwner)
+                          _ActionIconButton(
+                            icon: Icons.message_outlined,
+                            label: 'Nhắn tin',
+                            onTap: _navigateToChat,
+                          ),
                         const SizedBox(width: 8),
                         // CTA: Send rental request
                         Expanded(
@@ -666,11 +709,13 @@ class _ActionIconButton extends StatelessWidget {
   final IconData icon;
   final String label;
   final VoidCallback onTap;
+  final Color? iconColor;
 
   const _ActionIconButton({
     required this.icon,
     required this.label,
     required this.onTap,
+    this.iconColor,
   });
 
   @override
@@ -683,7 +728,7 @@ class _ActionIconButton extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 22, color: AppColors.neutral700),
+            Icon(icon, size: 22, color: iconColor ?? AppColors.neutral700),
             const SizedBox(height: 2),
             Text(
               label,

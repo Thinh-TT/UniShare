@@ -143,6 +143,14 @@ class ApiClient {
     await _dio.delete(path);
   }
 
+  /// Perform a DELETE request returning raw JSON (e.g. upvote toggle).
+  Future<Map<String, dynamic>> deleteRaw({
+    required String path,
+  }) async {
+    final response = await _dio.delete(path);
+    return response.data as Map<String, dynamic>;
+  }
+
   /// Upload multipart form data (e.g. images).
   Future<ApiResponse<T>> postMultipart<T>({
     required String path,

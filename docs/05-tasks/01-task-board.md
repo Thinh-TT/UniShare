@@ -96,10 +96,10 @@ Task board này bám theo:
 
 ### 6.4. Tương Tác Cộng Đồng
 
-| ID            | Task                              | Use Case | Status | Priority | Dependency               | Definition of Done                         |
-| ------------- | --------------------------------- | -------- | ------ | -------- | ------------------------ | ------------------------------------------ |
-| `API-INT-001` | Implement upvote/hủy upvote       | `FR-011` | `[x]`  | P1       | `API-LIST-002`, `DB-003` | Unique upvote/user/listing, cập nhật count, thông báo cho chủ bài |
-| `API-INT-002` | Implement lấy danh sách comment   | `FR-012` | `[x]`  | P1       | `DB-003`                 | Trả comments theo listing, paging, newest first                  |
+| ID            | Task                              | Use Case | Status | Priority | Dependency               | Definition of Done                                                 |
+| ------------- | --------------------------------- | -------- | ------ | -------- | ------------------------ | ------------------------------------------------------------------ |
+| `API-INT-001` | Implement upvote/hủy upvote       | `FR-011` | `[x]`  | P1       | `API-LIST-002`, `DB-003` | Unique upvote/user/listing, cập nhật count, thông báo cho chủ bài  |
+| `API-INT-002` | Implement lấy danh sách comment   | `FR-012` | `[x]`  | P1       | `DB-003`                 | Trả comments theo listing, paging, newest first                    |
 | `API-INT-003` | Implement tạo/sửa/xóa mềm comment | `FR-012` | `[x]`  | P1       | `API-INT-002`            | Validate ownership, reply cùng listing, admin xóa được mọi comment |
 
 ### 6.5. Chat Realtime
@@ -177,10 +177,10 @@ Task board này bám theo:
 
 | ID            | Task                                     | Use Case                     | Status | Priority | Dependency                    | Definition of Done                            |
 | ------------- | ---------------------------------------- | ---------------------------- | ------ | -------- | ----------------------------- | --------------------------------------------- |
-| `FE-INT-001`  | Build Upvote action trong Listing Detail | `FR-011`                     | `[ ]`  | P1       | `FE-LIST-003`, `API-INT-001`  | Toggle upvote, update count                   |
-| `FE-INT-002`  | Build Comments screen                    | `FR-012`                     | `[ ]`  | P1       | `FE-LIST-003`, `API-INT-003`  | List/create/reply/edit/delete comment         |
-| `FE-CHAT-001` | Build Conversation List                  | `FR-013`                     | `[ ]`  | P0       | `FE-CORE-006`, `API-CHAT-002` | List hội thoại và unread indicator            |
-| `FE-CHAT-002` | Build Chat Detail + SignalR client       | `FR-014`                     | `[ ]`  | P0       | `FE-CHAT-001`, `API-CHAT-004` | Realtime send/receive/mark read               |
+| `FE-INT-001`  | Build Upvote action trong Listing Detail | `FR-011`                     | `[x]`  | P1       | `FE-LIST-003`, `API-INT-001`  | Toggle upvote, update count                   |
+| `FE-INT-002`  | Build Comments screen                    | `FR-012`                     | `[x]`  | P1       | `FE-LIST-003`, `API-INT-003`  | List/create/reply/edit/delete comment         |
+| `FE-CHAT-001` | Build Conversation List                  | `FR-013`                     | `[x]`  | P0       | `FE-CORE-006`, `API-CHAT-002` | List hội thoại và unread indicator            |
+| `FE-CHAT-002` | Build Chat Detail + SignalR client       | `FR-014`                     | `[x]`  | P0       | `FE-CHAT-001`, `API-CHAT-004` | Realtime send/receive/mark read               |
 | `FE-REQ-001`  | Build Rental Request Form                | `FR-015`                     | `[ ]`  | P0       | `FE-LIST-003`, `API-REQ-001`  | Chọn ngày, tính tiền, gửi request             |
 | `FE-REQ-002`  | Build My Rental Requests                 | `FR-017`                     | `[ ]`  | P0       | `API-REQ-002`                 | Segment tôi gửi/gửi đến tôi                   |
 | `FE-REQ-003`  | Build Rental Request Detail              | `FR-016`, `FR-017`, `FR-019` | `[ ]`  | P0       | `FE-REQ-002`, `API-REQ-004`   | Accept/reject/cancel/start/complete theo role |
@@ -216,20 +216,20 @@ Task board này bám theo:
 
 ## 12. Milestones Đề Xuất
 
-| Milestone                      | Điều kiện hoàn thành                                       | Task chính                                                                     |
-| ------------------------------ | ---------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| `M1 - Backend Skeleton Ready`  | Backend chạy được, Swagger mở được, DB migrate được        | `SETUP-*`, `DB-*`                                                              |
-| `M2 - Core API Ready`          | Auth, user, metadata, listing API hoàn thành               | `API-AUTH-*`, `API-USER-*`, `API-META-*`, `API-LIST-*`, `API-IMG-*`            |
+| Milestone                      | Điều kiện hoàn thành                                          | Task chính                                                                     |
+| ------------------------------ | ------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `M1 - Backend Skeleton Ready`  | Backend chạy được, Swagger mở được, DB migrate được           | `SETUP-*`, `DB-*`                                                              |
+| `M2 - Core API Ready`          | Auth, user, metadata, listing API hoàn thành                  | `API-AUTH-*`, `API-USER-*`, `API-META-*`, `API-LIST-*`, `API-IMG-*`            |
 | `M3 - MVP API Complete`        | Chat, rental, deposit, review, notification API hoàn thành ✅ | `API-INT-*`, `API-CHAT-*`, `API-REQ-*`, `API-DEP-*`, `API-REV-*`, `API-NOTI-*` |
-| `M4 - Backend Verified`        | Unit/integration tests chính pass ✅                         | `TEST-BE-*`                                                                    |
-| `M5 - Flutter MVP UI Complete` | Tất cả màn hình UI-001 đến UI-020 hoàn thành               | `FE-CORE-*`, `FE-*`                                                            |
-| `M6 - Mobile Verified`         | Widget/integration/manual tests pass                       | `TEST-FE-*`                                                                    |
-| `M7 - APK Release Candidate`   | Build release APK và smoke test thành công                 | `BUILD-*`                                                                      |
+| `M4 - Backend Verified`        | Unit/integration tests chính pass ✅                          | `TEST-BE-*`                                                                    |
+| `M5 - Flutter MVP UI Complete` | Tất cả màn hình UI-001 đến UI-020 hoàn thành                  | `FE-CORE-*`, `FE-*`                                                            |
+| `M6 - Mobile Verified`         | Widget/integration/manual tests pass                          | `TEST-FE-*`                                                                    |
+| `M7 - APK Release Candidate`   | Build release APK và smoke test thành công                    | `BUILD-*`                                                                      |
 
 ## 13. Ghi Chú Blockers
 
-| Ngày | Task | Vấn đề | Hướng giải quyết |
-| ---- | ---- | ------ | ---------------- |
+| Ngày       | Task        | Vấn đề                                                                                                                                   | Hướng giải quyết                                                                                                              |
+| ---------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | 2026-06-22 | `FE-CORE-*` | Code đã viết xong (~92 files). Cần chạy `flutter pub get` + `dart run build_runner build` + `flutter analyze` + `flutter test` để verify | ✅ Done 2026-06-22: pub get (Dart 3.12.0 từ C:\dev\flutter), build_runner (66 outputs), analyze (0 errors), test (11/11 pass) |
 
 ## 14. Ghi Chú Kỹ Thuật

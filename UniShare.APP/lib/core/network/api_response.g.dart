@@ -40,7 +40,7 @@ PagedResponse<T> _$PagedResponseFromJson<T>(
   page: (json['page'] as num).toInt(),
   pageSize: (json['pageSize'] as num).toInt(),
   totalItems: (json['totalItems'] as num).toInt(),
-  totalPages: (json['totalPages'] as num).toInt(),
+  totalPages: (json['totalPages'] as num?)?.toInt(),
 );
 
 Map<String, dynamic> _$PagedResponseToJson<T>(

@@ -3,6 +3,7 @@ import '../../../core/network/api_response.dart';
 import '../../../core/constants/api_endpoints.dart';
 import '../../../core/enums/listing_type.dart';
 import '../../../core/enums/listing_status.dart';
+import '../../interactions/models/upvote_response.dart';
 import '../models/listing_summary_dto.dart';
 import '../models/listing_detail_dto.dart';
 import '../models/create_listing_request.dart';
@@ -118,15 +119,23 @@ class ListingsApi {
     );
   }
 
-  /// Toggle upvote on a listing. If already upvoted, call DELETE; otherwise PUT.
-  Future<void> toggleUpvote(String listingId, bool isUpvoted) async {
+  /// Toggle upvote on a listing.
+  /// If already upvoted (isUpvoted=true), call DELETE to remove.
+  /// Otherwise call PUT to add. Returns the current upvote state + count.
+  Future<UpvoteResponse> toggleUpvote(
+      String listingId, bool isUpvoted) async {
+    final Map<String, dynamic> response;
     if (isUpvoted) {
-      await _apiClient.delete(path: ApiEndpoints.upvote(listingId));
-    } else {
-      await _apiClient.put<void>(
+      response = await _apiClient.deleteRaw(
         path: ApiEndpoints.upvote(listingId),
-        fromJsonT: (_) => null,
+      );
+    } else {
+      response = await _apiClient.putRaw(
+        path: ApiEndpoints.upvote(listingId),
       );
     }
+    return UpvoteResponse.fromJson(
+      response['data'] as Map<String, dynamic>,
+    );
   }
 }

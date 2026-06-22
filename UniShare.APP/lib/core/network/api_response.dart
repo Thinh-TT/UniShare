@@ -21,21 +21,29 @@ class ApiResponse<T> {
 }
 
 /// Wrapper for paginated list API responses.
+///
+/// The backend computes [totalPages] as a getter (not serialized), so it
+/// may be absent from JSON. Use [hasMore] to check if there is a next page.
 @JsonSerializable(genericArgumentFactories: true)
 class PagedResponse<T> {
   final List<T> items;
   final int page;
   final int pageSize;
   final int totalItems;
-  final int totalPages;
+
+  @JsonKey(name: 'totalPages')
+  final int? totalPages;
 
   const PagedResponse({
     required this.items,
     required this.page,
     required this.pageSize,
     required this.totalItems,
-    required this.totalPages,
+    this.totalPages,
   });
+
+  /// Whether more items are available on the next page.
+  bool get hasMore => page * pageSize < totalItems;
 
   factory PagedResponse.fromJson(
     Map<String, dynamic> json,

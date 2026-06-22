@@ -1,6 +1,7 @@
 import '../../../core/enums/listing_type.dart';
 import '../../../core/enums/listing_status.dart';
 import '../../../core/network/api_response.dart';
+import '../../interactions/models/upvote_response.dart';
 import '../models/listing_summary_dto.dart';
 import '../models/listing_detail_dto.dart';
 import '../models/create_listing_request.dart';
@@ -86,8 +87,8 @@ class ListingsRepository {
     );
   }
 
-  /// Toggle upvote on a listing.
-  Future<void> toggleUpvote(String listingId, bool isUpvoted) {
+  /// Toggle upvote on a listing. Returns updated upvote state + count.
+  Future<UpvoteResponse> toggleUpvote(String listingId, bool isUpvoted) {
     return _listingsApi.toggleUpvote(listingId, isUpvoted);
   }
 }

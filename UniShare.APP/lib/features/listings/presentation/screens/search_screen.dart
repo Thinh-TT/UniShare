@@ -64,7 +64,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         _scrollController.position.maxScrollExtent - 200) {
       final currentData = ref.read(listingsProvider(_filters));
       currentData.whenData((paged) {
-        if (paged.page < paged.totalPages) {
+        if (paged.hasMore) {
           final nextPage = paged.page + 1;
           _filters = _filters.copyWith(page: nextPage);
           ref.invalidate(listingsProvider(_filters));
@@ -270,9 +270,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                               padding: const EdgeInsets.only(
                                   top: 4, bottom: 16),
                               itemCount: paged.items.length +
-                                  (paged.page <
-                                          paged.totalPages
-                                      ? 1
+                                  (paged.hasMore ? 1
                                       : 0),
                               itemBuilder: (context, index) {
                                 if (index >= paged.items.length) {

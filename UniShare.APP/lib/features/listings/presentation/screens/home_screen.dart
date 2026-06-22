@@ -51,7 +51,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       // Pagination: load next page
       final currentData = ref.read(listingsProvider(_filters));
       currentData.whenData((paged) {
-        if (paged.page < paged.totalPages) {
+        if (paged.hasMore) {
           final nextPage = paged.page + 1;
           _filters = _filters.copyWith(page: nextPage);
           ref.invalidate(listingsProvider(_filters));
@@ -236,7 +236,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   child: ListView.builder(
                     controller: _scrollController,
                     padding: const EdgeInsets.only(top: 4, bottom: 16),
-                    itemCount: paged.items.length + (paged.page < paged.totalPages ? 1 : 0),
+                    itemCount: paged.items.length + (paged.hasMore ? 1 : 0),
                     itemBuilder: (context, index) {
                       if (index >= paged.items.length) {
                         return const Padding(
