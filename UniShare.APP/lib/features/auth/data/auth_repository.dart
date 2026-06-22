@@ -2,7 +2,6 @@ import '../../../core/network/token_storage.dart';
 import '../models/login_request.dart';
 import '../models/register_request.dart';
 import '../models/refresh_token_request.dart';
-import '../models/login_response.dart';
 import '../../users/models/user_profile_dto.dart';
 import 'auth_api.dart';
 

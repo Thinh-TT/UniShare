@@ -5,6 +5,7 @@ import '../../../../core/network/api_client.dart';
 import '../../data/auth_api.dart';
 import '../../data/auth_repository.dart';
 import 'auth_state.dart';
+export 'auth_state.dart';
 
 // -- Dependency providers --
 

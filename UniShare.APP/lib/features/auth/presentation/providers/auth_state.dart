@@ -1,7 +1,9 @@
-import '../../users/models/user_profile_dto.dart';
+import '../../../users/models/user_profile_dto.dart';
 
 /// Represents the current authentication state.
-sealed class AuthState {}
+sealed class AuthState {
+  const AuthState();
+}
 
 class AuthInitial extends AuthState {}
 

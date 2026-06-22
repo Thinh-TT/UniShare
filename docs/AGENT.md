@@ -128,7 +128,42 @@ docs: update ui color guidelines
 test: add rental request state tests
 ```
 
-## 10. Tài Liệu Tham Khảo Nhanh
+## 10. Môi Trường Phát Triển Flutter
+
+### ⚠️ QUAN TRỌNG: Dual Flutter SDK
+
+Máy dev có **2 bản Flutter SDK**, chỉ dùng `C:\dev\flutter\`:
+
+| Vị trí                       | Dart SDK | Dùng?            |
+| ---------------------------- | -------- | ---------------- |
+| `C:\Program Files\flutter\`  | 3.10.8   | ❌ Quá cũ, bỏ qua |
+| `C:\dev\flutter\`            | 3.12.0   | ✅ Dùng cái này   |
+
+**Không chạy `flutter` hay `dart` qua Git Bash** — các file `.bat` wrapper bị treo không xác định.
+Thay vào đó, luôn dùng đường dẫn tuyệt đối đến `dart.exe`:
+
+```bash
+# Thay vì: flutter pub get
+"C:/dev/flutter/bin/cache/dart-sdk/bin/dart.exe" pub get
+
+# Thay vì: dart run build_runner build
+"C:/dev/flutter/bin/cache/dart-sdk/bin/dart.exe" run build_runner build
+
+# Thay vì: dart analyze
+"C:/dev/flutter/bin/cache/dart-sdk/bin/dart.exe" analyze
+
+# Thay vì: flutter test
+"C:/dev/flutter/bin/cache/dart-sdk/bin/dart.exe" \
+  "C:/dev/flutter/packages/flutter_tools/bin/flutter_tools.dart" test
+```
+
+### Các lưu ý khác khi dev Flutter
+- `build_runner`: không cần flag `--delete-conflicting-outputs` (đã bị remove ở version mới)
+- Khi dùng `ColorScheme.fromSeed` với Material 3, `primaryColor` trong `ThemeData` có thể không giữ giá trị chính xác — kiểm tra `colorScheme.primary` thay thế
+- Không sửa provider state trong widget lifecycle (`build`, `initState`, `didChangeDependencies`). Wrap bằng `Future.microtask` nếu bắt buộc.
+- `sealed class` trong Dart cần explicit `const` constructor nếu subclass muốn dùng `const`.
+
+## 11. Tài Liệu Tham Khảo Nhanh
 
 | Tài liệu                | Đường dẫn                                     | Dùng khi                           |
 | ----------------------- | --------------------------------------------- | ---------------------------------- |

@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/app_colors.dart';
 import '../../../../shared/widgets/loading_state.dart';
-import '../../../../shared/widgets/error_state.dart';
 import '../providers/auth_provider.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
@@ -21,7 +20,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     super.didChangeDependencies();
     if (!_hasChecked) {
       _hasChecked = true;
-      _checkAuth();
+      Future.microtask(() => _checkAuth());
     }
   }
 

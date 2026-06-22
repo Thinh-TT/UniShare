@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../config/app_colors.dart';
 
 /// Styled text input matching UniShare design guidelines.
 class AppInput extends StatelessWidget {

@@ -51,7 +51,7 @@ class SignalRService {
           _appConfig.signalrHubUrl,
           options: HttpConnectionOptions(
             accessTokenFactory: () async => token,
-            transport: HttpTransportType.webSockets,
+            transport: HttpTransportType.WebSockets,
           ),
         )
         .withAutomaticReconnect()

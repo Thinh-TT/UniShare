@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../config/app_colors.dart';
 import 'route_names.dart';
 
 /// Root shell with bottom navigation bar for the main authenticated experience.
