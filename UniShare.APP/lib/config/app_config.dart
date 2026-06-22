@@ -1,3 +1,5 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 class AppConfig {
   final String apiBaseUrl;
   final String signalrHubUrl;
@@ -35,3 +37,10 @@ class AppConfig {
     }
   }
 }
+
+/// Riverpod provider for AppConfig.
+///
+/// Must be overridden in ProviderScope at app startup.
+final appConfigProvider = Provider<AppConfig>((ref) {
+  throw UnimplementedError('Override appConfigProvider in ProviderScope');
+});

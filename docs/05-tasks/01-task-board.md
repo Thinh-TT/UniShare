@@ -144,12 +144,12 @@ Task board này bám theo:
 
 | ID            | Task                                                                      | Use Case      | Status | Priority | Dependency                   | Definition of Done                                       |
 | ------------- | ------------------------------------------------------------------------- | ------------- | ------ | -------- | ---------------------------- | -------------------------------------------------------- |
-| `FE-CORE-001` | Cấu hình theme màu trắng/xanh lá theo color guidelines                    | N/A           | `[ ]`  | P0       | `SETUP-008`                  | Theme dùng đúng token màu trong `02-color-guidelines.md` |
-| `FE-CORE-002` | Thiết lập routing/navigation theo sitemap                                 | All UI        | `[ ]`  | P0       | `SETUP-008`                  | Có bottom tabs và stacks chính                           |
-| `FE-CORE-003` | Tạo API client, interceptors, token storage                               | All API       | `[ ]`  | P0       | `SETUP-009`                  | Gọi API, attach token, handle 401                        |
-| `FE-CORE-004` | Tạo model/DTO mapping cho API response                                    | All API       | `[ ]`  | P0       | `FE-CORE-003`                | Parse được response wrapper/list/paging                  |
-| `FE-CORE-005` | Tạo component dùng chung: button, input, card, badge, empty/error/loading | All UI        | `[ ]`  | P0       | `FE-CORE-001`                | UI component nhất quán                                   |
-| `FE-CORE-006` | Tạo auth guard và login required modal                                    | Auth/UI rules | `[ ]`  | P0       | `FE-CORE-002`, `FE-CORE-003` | Khách bị redirect khi dùng action private                |
+| `FE-CORE-001` | Cấu hình theme màu trắng/xanh lá theo color guidelines                    | N/A           | `[~]`  | P0       | `SETUP-008`                  | Theme dùng đúng token màu trong `02-color-guidelines.md` |
+| `FE-CORE-002` | Thiết lập routing/navigation theo sitemap                                 | All UI        | `[~]`  | P0       | `SETUP-008`                  | Có bottom tabs và stacks chính                           |
+| `FE-CORE-003` | Tạo API client, interceptors, token storage                               | All API       | `[~]`  | P0       | `SETUP-009`                  | Gọi API, attach token, handle 401                        |
+| `FE-CORE-004` | Tạo model/DTO mapping cho API response                                    | All API       | `[~]`  | P0       | `FE-CORE-003`                | Parse được response wrapper/list/paging                  |
+| `FE-CORE-005` | Tạo component dùng chung: button, input, card, badge, empty/error/loading | All UI        | `[~]`  | P0       | `FE-CORE-001`                | UI component nhất quán                                   |
+| `FE-CORE-006` | Tạo auth guard và login required modal                                    | Auth/UI rules | `[~]`  | P0       | `FE-CORE-002`, `FE-CORE-003` | Khách bị redirect khi dùng action private                |
 
 ## 9. Phase 5 - Flutter UI Screens
 
@@ -230,7 +230,7 @@ Task board này bám theo:
 
 | Ngày | Task | Vấn đề | Hướng giải quyết |
 | ---- | ---- | ------ | ---------------- |
-|      |      |        |                  |
+| 2026-06-22 | `FE-CORE-*` | Code đã viết xong (~92 files). Cần chạy `flutter pub get` + `dart run build_runner build` + `flutter analyze` + `flutter test` để verify | Chạy Step I trong session sau |
 
 ## 14. Ghi Chú Kỹ Thuật
 
