@@ -725,7 +725,11 @@ void main() {
           },
           'school': {'id': 'school-1', 'name': 'Đại học Bách Khoa'},
           'area': {'id': 'area-1', 'name': 'Quận 10', 'city': 'Hồ Chí Minh'},
-          'tags': ['laptop', 'dell', 'macbook'],
+          'tags': [
+            {'id': 'tag-1', 'name': 'Laptop', 'slug': 'laptop'},
+            {'id': 'tag-2', 'name': 'Dell', 'slug': 'dell'},
+            {'id': 'tag-3', 'name': 'MacBook', 'slug': 'macbook'},
+          ],
           'images': [
             {
               'id': 'img-1',

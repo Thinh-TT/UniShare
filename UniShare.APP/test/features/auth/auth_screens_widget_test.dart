@@ -361,6 +361,7 @@ void main() {
     Widget wrapProfileWith(UserProfileDto profile) {
       return ProviderScope(
         overrides: [
+          appConfigProvider.overrideWithValue(AppConfig.dev),
           authProvider.overrideWith((ref) => _FakeAuthNotifier(
                 AuthAuthenticated(
                   accessToken: 'token',
@@ -435,6 +436,7 @@ void main() {
     Widget wrapEditWith(UserProfileDto profile) {
       return ProviderScope(
         overrides: [
+          appConfigProvider.overrideWithValue(AppConfig.dev),
           authProvider.overrideWith((ref) => _FakeAuthNotifier(
                 AuthAuthenticated(
                   accessToken: 'token',
