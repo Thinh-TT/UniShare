@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../../config/app_colors.dart';
 import '../../../../config/app_config.dart';
 import '../../../../core/errors/app_exception.dart';
@@ -38,6 +40,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
   bool _isInitialized = false;
   bool _isSaving = false;
+  bool _isUploadingAvatar = false;
   String? _errorMessage;
 
   @override
@@ -190,6 +193,94 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     return null;
   }
 
+  Future<void> _pickAndUploadAvatar() async {
+    if (_isUploadingAvatar) return;
+
+    // Show source picker: camera or gallery
+    final source = await showModalBottomSheet<ImageSource>(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (context) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: Text(
+                  'Chọn ảnh đại diện',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.camera_alt, color: AppColors.green),
+                title: const Text('Chụp ảnh'),
+                onTap: () => Navigator.pop(context, ImageSource.camera),
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_library, color: AppColors.green),
+                title: const Text('Chọn từ thư viện'),
+                onTap: () => Navigator.pop(context, ImageSource.gallery),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    if (source == null || !mounted) return;
+
+    setState(() => _isUploadingAvatar = true);
+
+    try {
+      final picker = ImagePicker();
+      final pickedFile = await picker.pickImage(
+        source: source,
+        maxWidth: 1024,
+        maxHeight: 1024,
+        imageQuality: 85,
+      );
+
+      if (pickedFile == null) {
+        if (mounted) setState(() => _isUploadingAvatar = false);
+        return;
+      }
+
+      // Upload to server
+      await ref
+          .read(userRepositoryProvider)
+          .uploadAvatar(pickedFile.path);
+
+      if (!mounted) return;
+
+      // Delete the temporary file
+      try {
+        final file = File(pickedFile.path);
+        if (file.existsSync()) file.deleteSync();
+      } catch (_) {}
+
+      // Invalidate profile provider so all screens reflect the new avatar
+      ref.invalidate(userProfileProvider);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Cập nhật ảnh đại diện thành công!')),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      final message = e is AppException
+          ? e.message
+          : 'Tải ảnh lên thất bại. Vui lòng thử lại.';
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
+    } finally {
+      if (mounted) setState(() => _isUploadingAvatar = false);
+    }
+  }
+
   Future<void> _handleSave() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -263,23 +354,70 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Avatar (read-only display)
+              // Avatar with upload overlay
               Center(
-                child: UserAvatar(
-                  avatarUrl: profile.avatarUrl,
-                  fullName: profile.fullName,
-                  reputationScore: profile.reputationScore,
-                  size: 80,
-                  mediaBaseUrl: ref.read(appConfigProvider).mediaBaseUrl,
+                child: Stack(
+                  children: [
+                    UserAvatar(
+                      avatarUrl: profile.avatarUrl,
+                      fullName: profile.fullName,
+                      reputationScore: profile.reputationScore,
+                      size: 80,
+                      mediaBaseUrl: ref.read(appConfigProvider).mediaBaseUrl,
+                    ),
+                    if (_isUploadingAvatar)
+                      Positioned.fill(
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: Colors.black26,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Center(
+                            child: SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    AppColors.white),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: GestureDetector(
+                        onTap: _isUploadingAvatar ? null : _pickAndUploadAvatar,
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: const BoxDecoration(
+                            color: AppColors.green,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.camera_alt,
+                            size: 18,
+                            color: AppColors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 8),
-              Text(
-                'Ảnh đại diện',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.neutral500,
-                    ),
-                textAlign: TextAlign.center,
+              GestureDetector(
+                onTap: _isUploadingAvatar ? null : _pickAndUploadAvatar,
+                child: Text(
+                  'Thay đổi ảnh đại diện',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.green,
+                        fontWeight: FontWeight.w600,
+                      ),
+                  textAlign: TextAlign.center,
+                ),
               ),
               const SizedBox(height: 24),
 

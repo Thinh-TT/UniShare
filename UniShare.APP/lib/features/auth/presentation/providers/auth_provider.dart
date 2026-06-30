@@ -1,7 +1,10 @@
+import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../config/app_config.dart';
 import '../../../../core/network/token_storage.dart';
 import '../../../../core/network/api_client.dart';
+import '../../../../core/network/notification_signalr_provider.dart';
 import '../../data/auth_api.dart';
 import '../../data/auth_repository.dart';
 import 'auth_state.dart';
@@ -35,20 +38,27 @@ final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   return AuthNotifier(
     ref.read(authRepositoryProvider),
     ref.read(tokenStorageProvider),
+    ref.read(notificationSignalRServiceProvider),
   );
 });
 
 class AuthNotifier extends StateNotifier<AuthState> {
   final AuthRepository _authRepository;
   final TokenStorage _tokenStorage;
+  final NotificationSignalRService _notificationSignalR;
 
-  AuthNotifier(this._authRepository, this._tokenStorage) : super(AuthInitial());
+  AuthNotifier(
+    this._authRepository,
+    this._tokenStorage,
+    this._notificationSignalR,
+  ) : super(AuthInitial());
 
   /// Check for existing session on app start.
   ///
   /// ALWAYS transitions state out of [AuthLoading], even on error.
   /// This ensures the splash screen never hangs indefinitely.
   Future<void> tryAutoLogin() async {
+    debugPrint('[AuthNotifier] tryAutoLogin: starting...');
     state = AuthLoading();
     try {
       final user = await _authRepository.tryAutoLogin();
@@ -57,16 +67,33 @@ class AuthNotifier extends StateNotifier<AuthState> {
             await _tokenStorage.getAccessToken() ?? '';
         final refreshToken =
             await _tokenStorage.getRefreshToken() ?? '';
+
+        // Validate: empty token means session is invalid despite user response
+        if (accessToken.isEmpty || refreshToken.isEmpty) {
+          debugPrint(
+            '[AuthNotifier] tryAutoLogin: token empty despite user — '
+            'forcing unauthenticated',
+          );
+          await _authRepository.logout();
+          state = AuthUnauthenticated();
+          return;
+        }
+
         state = AuthAuthenticated(
           accessToken: accessToken,
           refreshToken: refreshToken,
           user: user,
         );
+        debugPrint('[AuthNotifier] tryAutoLogin: success — user=${user.id}');
+        // Connect notification SignalR for real-time updates
+        unawaited(_notificationSignalR.connect());
       } else {
+        debugPrint('[AuthNotifier] tryAutoLogin: no session found');
         state = AuthUnauthenticated();
       }
-    } catch (_) {
+    } catch (e, st) {
       // Storage error, network error, etc. — force unauthenticated.
+      debugPrint('[AuthNotifier] tryAutoLogin: error=$e\n$st');
       state = AuthUnauthenticated();
     }
   }
@@ -88,6 +115,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
         refreshToken: refreshToken,
         user: user,
       );
+      // Connect notification SignalR for real-time updates
+      unawaited(_notificationSignalR.connect());
     } catch (e) {
       state = AuthUnauthenticated();
       rethrow;
@@ -119,6 +148,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   /// Logout.
   Future<void> logout() async {
+    await _notificationSignalR.disconnect();
     await _authRepository.logout();
     state = AuthUnauthenticated();
   }

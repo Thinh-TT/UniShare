@@ -214,7 +214,64 @@ Task board này bám theo:
 | `BUILD-006` | Smoke test APK release trên thiết bị thật                     | MVP flow | `[ ]`  | P0       | `BUILD-005`                | Cài được APK, login và flow chính hoạt động |
 | `BUILD-007` | Chuẩn bị release notes và danh sách known issues              | N/A      | `[ ]`  | P1       | `BUILD-006`                | Có ghi chú phiên bản MVP và lỗi còn lại     |
 
-## 12. Milestones Đề Xuất
+## 12. Phase 8 - Sửa Đăng Nhập, Upload Avatar, Notification Badge & Deep Link
+
+> Chi tiết tại [02-phase-8.md](./02-phase-8.md)
+
+### 12.1. Sửa Login Persistence
+
+| ID | Task | Status | Priority | Dependency | Definition of Done |
+|----|------|--------|----------|------------|-------------------|
+| `P8-AUTH-001` | Thêm `SharedPreferences` fallback storage trong `TokenStorage` | `[x]` | P0 | N/A | Ghi cả 2 storage, fallback khi secure storage fail |
+| `P8-AUTH-002` | Sửa race condition `SplashScreen` (`didChangeDependencies` → `initState` + `addPostFrameCallback`) | `[x]` | P0 | N/A | Không double-fire, có `mounted` check |
+| `P8-AUTH-003` | Validate token sau refresh: token rỗng → `AuthUnauthenticated` | `[x]` | P0 | `P8-AUTH-001` | Sau tryAutoLogin nếu token null → redirect login |
+| `P8-AUTH-004` | Thêm debug log và error callback cho `tryAutoLogin()` | `[x]` | P1 | `P8-AUTH-001` | Log được lỗi storage khi debug |
+
+### 12.2. Upload Avatar
+
+#### Backend
+
+| ID | Task | Status | Priority | Dependency | Definition of Done |
+|----|------|--------|----------|------------|-------------------|
+| `P8-AV-BE-01` | Tạo `IAvatarService` + `AvatarService` (validate, lưu `wwwroot/uploads/avatars/`, xóa file cũ) | `[x]` | P0 | N/A | Upload .jpg/.png/.webp ≤5MB, file cũ bị xóa |
+| `P8-AV-BE-02` | Thêm `POST /api/v1/users/me/avatar` trong `UsersController` | `[x]` | P0 | `P8-AV-BE-01` | Trả URL avatar mới |
+| `P8-AV-BE-03` | Đăng ký `IAvatarService` trong DI | `[x]` | P0 | `P8-AV-BE-01` | Service inject đúng |
+
+#### Flutter
+
+| ID | Task | Status | Priority | Dependency | Definition of Done |
+|----|------|--------|----------|------------|-------------------|
+| `P8-AV-FE-01` | Thêm `uploadAvatar()` trong `UserApi` + `UserRepository` | `[x]` | P0 | `P8-AV-BE-02` | Gọi multipart upload, nhận URL |
+| `P8-AV-FE-02` | Thêm image picker vào `EditProfileScreen` (camera/gallery, resize 1024px) | `[x]` | P0 | `P8-AV-FE-01` | Chọn ảnh, upload, invalidate `userProfileProvider` |
+| `P8-AV-FE-03` | Kiểm tra đồng bộ avatar trên Home, Profile, Comments, Chat | `[x]` | P0 | `P8-AV-FE-02` | Sau upload tất cả màn hình reflect avatar mới |
+| `P8-AV-FE-04` | Thêm constant `uploadAvatar` trong `api_endpoints.dart` | `[x]` | P0 | `P8-AV-BE-02` | Constant sẵn sàng |
+
+### 12.3. Notification Badge & Deep Link
+
+| ID | Task | Status | Priority | Dependency | Definition of Done |
+|----|------|--------|----------|------------|-------------------|
+| `P8-BADGE-001` | **Bug fix**: `getUnreadCount()` parse `data as int` (hiện tại parse `as Map` sai) | `[x]` | P0 | N/A | `unreadCountProvider` trả đúng số |
+| `P8-BADGE-002` | Tạo widget `NotificationBadgeIcon` reusable | `[x]` | P0 | `P8-BADGE-001` | Widget chung, watch `unreadCountProvider`, badge đỏ |
+| `P8-BADGE-003` | Thay code badge `HomeScreen` bằng `NotificationBadgeIcon` | `[x]` | P1 | `P8-BADGE-002` | HomeScreen dùng widget chung |
+| `P8-BADGE-004` | Thêm `NotificationBadgeIcon` vào AppBar `ProfileScreen` | `[x]` | P0 | `P8-BADGE-002` | ProfileScreen có badge |
+| `P8-NOTI-001` | Tạo `NotificationSignalRService` kết nối `/hubs/notifications` (tách khỏi chat hub) | `[x]` | P0 | N/A | `onNotificationReceived` stream real-time |
+| `P8-NOTI-002` | Tạo `notificationSignalRServiceProvider` (Riverpod singleton) | `[x]` | P0 | `P8-NOTI-001` | Provider inject được |
+| `P8-NOTI-003` | Xóa dead code `onNotificationReceived` khỏi `SignalRService` | `[x]` | P1 | `P8-NOTI-001` | `SignalRService` chỉ còn chat |
+| `P8-NOTI-004` | Auto-connect notification SignalR trong `AuthNotifier` (sau login) và disconnect (sau logout) | `[x]` | P0 | `P8-NOTI-002` | Tự động connect/disconnect theo auth state |
+| `P8-NOTI-005` | Chuyển `MainShell` → `ConsumerStatefulWidget`, subscribe real-time notification | `[x]` | P0 | `P8-NOTI-001` | Nhận notification → invalidate `unreadCountProvider` |
+| `P8-NOTI-006` | SnackBar real-time khi có notification, tap "Xem" → navigate theo `referenceType` | `[x]` | P0 | `P8-NOTI-005` | SnackBar + navigate đúng màn hình |
+| `P8-NOTI-007` | Xác minh deep link `NotificationsScreen._onTapNotification()` hoạt động | `[x]` | P1 | `P8-NOTI-006` | List notification tap → navigate đúng |
+
+### 12.4. Verify & Tổng Kết
+
+| ID | Task | Status | Priority | Dependency | Definition of Done |
+|----|------|--------|----------|------------|-------------------|
+| `P8-TEST-001` | Test login persistence: login → kill app → mở lại → auto Home | `[ ]` | P0 | `P8-AUTH-003` | Không cần login lại |
+| `P8-TEST-002` | Test avatar upload + sync: upload → kiểm tra Home, Profile, Chat | `[ ]` | P0 | `P8-AV-FE-03` | Avatar đồng bộ mọi màn hình |
+| `P8-TEST-003` | Test notification real-time flow: nhận → badge tăng → snackbar → navigate | `[ ]` | P0 | `P8-NOTI-007` | Toàn bộ flow notification hoạt động |
+| `P8-TEST-004` | Test edge cases: background/reconnect, notification khi ở sub-screen | `[ ]` | P1 | `P8-TEST-003` | Edge cases hoạt động |
+
+## 13. Milestones Đề Xuất
 
 | Milestone                      | Điều kiện hoàn thành                                          | Task chính                                                                     |
 | ------------------------------ | ------------------------------------------------------------- | ------------------------------------------------------------------------------ |
@@ -225,14 +282,15 @@ Task board này bám theo:
 | `M5 - Flutter MVP UI Complete` | Tất cả màn hình UI-001 đến UI-020 hoàn thành                  | `FE-CORE-*`, `FE-*`                                                            |
 | `M6 - Mobile Verified`         | Widget/integration/manual tests pass                          | `TEST-FE-*`                                                                    |
 | `M7 - APK Release Candidate`   | Build release APK và smoke test thành công                    | `BUILD-*`                                                                      |
+| `M8 - UX Polish`               | Login persistence, avatar upload, notification badge & deep link hoàn thành | `P8-*`                                                                         |
 
-## 13. Ghi Chú Blockers
+## 14. Ghi Chú Blockers
 
 | Ngày       | Task        | Vấn đề                                                                                                                                   | Hướng giải quyết                                                                                                              |
 | ---------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | 2026-06-22 | `FE-CORE-*` | Code đã viết xong (~92 files). Cần chạy `flutter pub get` + `dart run build_runner build` + `flutter analyze` + `flutter test` để verify | ✅ Done 2026-06-22: pub get (Dart 3.12.0 từ C:\dev\flutter), build_runner (66 outputs), analyze (0 errors), test (11/11 pass) |
 
-## 14. Ghi Chú Kỹ Thuật
+## 15. Ghi Chú Kỹ Thuật
 
 - Backend nên tách DTO request/response khỏi EF Core entity.
 - Các API protected phải kiểm tra authentication ở endpoint/controller và ownership trong service.

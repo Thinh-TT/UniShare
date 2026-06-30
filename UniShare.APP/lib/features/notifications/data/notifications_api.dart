@@ -26,7 +26,7 @@ class NotificationsApi {
     final response = await _apiClient.getRaw(
       path: ApiEndpoints.unreadCount,
     );
-    return (response['data'] as Map<String, dynamic>)['unreadCount'] as int;
+    return response['data'] as int;
   }
 
   /// Mark a single notification as read.

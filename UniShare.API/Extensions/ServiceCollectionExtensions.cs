@@ -211,6 +211,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IRentalService, RentalService>();
         services.AddScoped<IDepositService, DepositService>();
         services.AddScoped<IReviewService, ReviewService>();
+        services.AddScoped<IAvatarService, AvatarService>();
 
         return services;
     }

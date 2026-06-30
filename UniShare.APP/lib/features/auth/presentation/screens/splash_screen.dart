@@ -15,18 +15,18 @@ class SplashScreen extends ConsumerStatefulWidget {
 }
 
 class _SplashScreenState extends ConsumerState<SplashScreen> {
-  bool _hasChecked = false;
   bool _hasNavigated = false;
   Timer? _fallbackTimer;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (!_hasChecked) {
-      _hasChecked = true;
-      // Run after the first frame so GoRouter is ready.
-      WidgetsBinding.instance.addPostFrameCallback((_) => _checkAuth());
-    }
+  void initState() {
+    super.initState();
+    // Use initState + addPostFrameCallback (not didChangeDependencies)
+    // to ensure the callback fires exactly once, preventing double-fire
+    // navigation that could occur when InheritedWidgets rebuild.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _checkAuth();
+    });
   }
 
   @override

@@ -4,9 +4,10 @@ import 'package:signalr_netcore/signalr_client.dart';
 import '../../config/app_config.dart';
 import 'token_storage.dart';
 
-/// SignalR real-time client for chat and notifications.
+/// SignalR real-time client for chat.
 ///
 /// Connects to the ASP.NET Core SignalR hub at `/hubs/chat`.
+/// Notification SignalR is handled by [NotificationSignalRService].
 class SignalRService {
   final AppConfig _appConfig;
   final TokenStorage _tokenStorage;
@@ -15,8 +16,6 @@ class SignalRService {
   bool _isConnected = false;
 
   final _messageReceivedController =
-      StreamController<Map<String, dynamic>>.broadcast();
-  final _notificationReceivedController =
       StreamController<Map<String, dynamic>>.broadcast();
   final _connectionStateController = StreamController<bool>.broadcast();
 
@@ -29,10 +28,6 @@ class SignalRService {
   /// Stream of incoming messages.
   Stream<Map<String, dynamic>> get onMessageReceived =>
       _messageReceivedController.stream;
-
-  /// Stream of incoming notifications.
-  Stream<Map<String, dynamic>> get onNotificationReceived =>
-      _notificationReceivedController.stream;
 
   /// Stream of connection state changes.
   Stream<bool> get onConnectionStateChanged =>
@@ -63,12 +58,6 @@ class SignalRService {
     _hubConnection!.on('MessageReceived', (args) {
       if (args != null && args.isNotEmpty) {
         _messageReceivedController.add(args[0] as Map<String, dynamic>);
-      }
-    });
-
-    _hubConnection!.on('NotificationReceived', (args) {
-      if (args != null && args.isNotEmpty) {
-        _notificationReceivedController.add(args[0] as Map<String, dynamic>);
       }
     });
 
@@ -150,7 +139,6 @@ class SignalRService {
   void dispose() {
     disconnect();
     _messageReceivedController.close();
-    _notificationReceivedController.close();
     _connectionStateController.close();
   }
 }

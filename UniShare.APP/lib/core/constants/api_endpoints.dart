@@ -12,6 +12,7 @@ class ApiEndpoints {
 
   // Users
   static const String myProfile = '/users/me';
+  static const String uploadAvatar = '/users/me/avatar';
   static const String users = '/users'; // + /{userId}
   static String userById(String userId) => '/users/$userId';
   static String userReviews(String userId) => '/users/$userId/reviews';

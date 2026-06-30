@@ -6,6 +6,8 @@ import 'package:unishare/features/auth/presentation/providers/auth_provider.dart
 import 'package:unishare/features/auth/presentation/providers/auth_state.dart';
 import 'package:unishare/features/auth/presentation/screens/login_screen.dart';
 import 'package:unishare/features/auth/presentation/screens/register_screen.dart';
+import 'package:unishare/features/notifications/presentation/providers/notifications_provider.dart'
+    show unreadCountProvider;
 import 'package:unishare/features/users/presentation/providers/user_provider.dart';
 import 'package:unishare/features/users/models/user_profile_dto.dart';
 import 'package:unishare/features/users/presentation/screens/profile_screen.dart';
@@ -370,6 +372,7 @@ void main() {
                 ),
               )),
           userProfileProvider.overrideWith((ref) => Future.value(profile)),
+          unreadCountProvider.overrideWith((ref) => Future.value(0)),
         ],
         child: const MaterialApp(home: ProfileScreen()),
       );
@@ -445,6 +448,7 @@ void main() {
                 ),
               )),
           userProfileProvider.overrideWith((ref) => Future.value(profile)),
+          unreadCountProvider.overrideWith((ref) => Future.value(0)),
         ],
         child: const MaterialApp(home: EditProfileScreen()),
       );
@@ -464,8 +468,8 @@ void main() {
       expect(find.text('Trường học'), findsOneWidget);
       expect(find.text('Khu vực'), findsOneWidget);
 
-      // Avatar hint
-      expect(find.text('Ảnh đại diện'), findsOneWidget);
+      // Avatar picker hint
+      expect(find.text('Thay đổi ảnh đại diện'), findsOneWidget);
 
       // Save button
       expect(find.text('Lưu thay đổi'), findsOneWidget);

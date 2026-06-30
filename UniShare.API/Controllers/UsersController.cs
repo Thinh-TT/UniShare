@@ -13,10 +13,12 @@ namespace UniShare.API.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly IUserService _userService;
+    private readonly IAvatarService _avatarService;
 
-    public UsersController(IUserService userService)
+    public UsersController(IUserService userService, IAvatarService avatarService)
     {
         _userService = userService;
+        _avatarService = avatarService;
     }
 
     /// <summary>Get current user's full profile</summary>
@@ -73,5 +75,22 @@ public class UsersController : ControllerBase
             PageSize = pageSize,
             TotalItems = totalCount
         });
+    }
+
+    /// <summary>Upload or update the current user's avatar</summary>
+    [HttpPost("me/avatar")]
+    [Authorize]
+    [ProducesResponseType(typeof(ApiResponse<AvatarUploadResponse>), 200)]
+    [ProducesResponseType(typeof(ProblemDetails), 400)]
+    [ProducesResponseType(typeof(ProblemDetails), 404)]
+    public async Task<IActionResult> UploadAvatar(IFormFile file)
+    {
+        var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var avatarUrl = await _avatarService.UploadAvatarAsync(userId, file);
+
+        return Ok(ApiResponse.Success(new AvatarUploadResponse
+        {
+            AvatarUrl = avatarUrl
+        }));
     }
 }

@@ -8,6 +8,7 @@ import '../../../../shared/widgets/confirm_dialog.dart';
 import '../../../../shared/widgets/error_state.dart';
 import '../../../../shared/widgets/loading_state.dart';
 import '../../../../shared/widgets/status_badge.dart';
+import '../../../../shared/widgets/notification_badge_icon.dart';
 import '../../../../shared/widgets/user_avatar.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../providers/user_provider.dart';
@@ -46,6 +47,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.white,
         title: const Text('Hồ sơ'),
+        actions: [
+          NotificationBadgeIcon(
+            onTap: () => context.push('/notifications'),
+          ),
+        ],
       ),
       body: profileAsync.when(
         loading: () =>
