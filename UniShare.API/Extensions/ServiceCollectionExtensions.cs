@@ -206,6 +206,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IChatService, ChatService>();
         services.AddScoped<IAdminService, AdminService>();
         services.AddScoped<AdminSeedService>();
+        services.AddScoped<TestDataSeeder>();
         services.AddScoped<INotificationService, NotificationService>();
         services.AddScoped<IRentalService, RentalService>();
         services.AddScoped<IDepositService, DepositService>();

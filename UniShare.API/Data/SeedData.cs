@@ -20,16 +20,22 @@ public static class SeedData
     {
         var schools = new[]
         {
-            new School { Id = Guid.Parse("10000000-0000-0000-0000-000000000001"), Name = "Đại học Bách Khoa Hà Nội", ShortName = "HUST", City = "Hà Nội", IsActive = true, CreatedAt = SeedTime },
-            new School { Id = Guid.Parse("10000000-0000-0000-0000-000000000002"), Name = "Đại học Quốc Gia Hà Nội", ShortName = "VNU", City = "Hà Nội", IsActive = true, CreatedAt = SeedTime },
-            new School { Id = Guid.Parse("10000000-0000-0000-0000-000000000003"), Name = "Đại học Kinh Tế Quốc Dân", ShortName = "NEU", City = "Hà Nội", IsActive = true, CreatedAt = SeedTime },
-            new School { Id = Guid.Parse("10000000-0000-0000-0000-000000000004"), Name = "Đại học Xây Dựng", ShortName = "NUCE", City = "Hà Nội", IsActive = true, CreatedAt = SeedTime },
-            new School { Id = Guid.Parse("10000000-0000-0000-0000-000000000005"), Name = "Học viện Công nghệ Bưu chính Viễn thông", ShortName = "PTIT", City = "Hà Nội", IsActive = true, CreatedAt = SeedTime },
-            new School { Id = Guid.Parse("10000000-0000-0000-0000-000000000006"), Name = "Đại học Thương Mại", ShortName = "TMU", City = "Hà Nội", IsActive = true, CreatedAt = SeedTime },
-            new School { Id = Guid.Parse("10000000-0000-0000-0000-000000000007"), Name = "Đại học Sư Phạm Hà Nội", ShortName = "HNUE", City = "Hà Nội", IsActive = true, CreatedAt = SeedTime },
-            new School { Id = Guid.Parse("10000000-0000-0000-0000-000000000008"), Name = "Đại học Ngoại Thương", ShortName = "FTU", City = "Hà Nội", IsActive = true, CreatedAt = SeedTime },
-            new School { Id = Guid.Parse("10000000-0000-0000-0000-000000000009"), Name = "Đại học Luật Hà Nội", ShortName = "HLU", City = "Hà Nội", IsActive = true, CreatedAt = SeedTime },
-            new School { Id = Guid.Parse("10000000-0000-0000-0000-000000000010"), Name = "Đại học Công Nghiệp Hà Nội", ShortName = "HAUI", City = "Hà Nội", IsActive = true, CreatedAt = SeedTime },
+            // TP. Hồ Chí Minh
+            new School { Id = Guid.Parse("10000000-0000-0000-0000-000000000011"), Name = "Đại học Bách Khoa TP.HCM", ShortName = "HCMUT", City = "TP. Hồ Chí Minh", IsActive = true, CreatedAt = SeedTime },
+            new School { Id = Guid.Parse("10000000-0000-0000-0000-000000000012"), Name = "Đại học Khoa học Tự nhiên TP.HCM", ShortName = "HCMUS", City = "TP. Hồ Chí Minh", IsActive = true, CreatedAt = SeedTime },
+            new School { Id = Guid.Parse("10000000-0000-0000-0000-000000000013"), Name = "Đại học Kinh tế TP.HCM", ShortName = "UEH", City = "TP. Hồ Chí Minh", IsActive = true, CreatedAt = SeedTime },
+            new School { Id = Guid.Parse("10000000-0000-0000-0000-000000000014"), Name = "Đại học Sư phạm TP.HCM", ShortName = "HCMUE", City = "TP. Hồ Chí Minh", IsActive = true, CreatedAt = SeedTime },
+            new School { Id = Guid.Parse("10000000-0000-0000-0000-000000000015"), Name = "Đại học Nông Lâm TP.HCM", ShortName = "NLU", City = "TP. Hồ Chí Minh", IsActive = true, CreatedAt = SeedTime },
+            new School { Id = Guid.Parse("10000000-0000-0000-0000-000000000016"), Name = "Đại học Công nghệ Thông tin", ShortName = "UIT", City = "TP. Hồ Chí Minh", IsActive = true, CreatedAt = SeedTime },
+            new School { Id = Guid.Parse("10000000-0000-0000-0000-000000000017"), Name = "Đại học Y Dược TP.HCM", ShortName = "UMP", City = "TP. Hồ Chí Minh", IsActive = true, CreatedAt = SeedTime },
+            new School { Id = Guid.Parse("10000000-0000-0000-0000-000000000018"), Name = "Đại học Kiến Trúc TP.HCM", ShortName = "UAH", City = "TP. Hồ Chí Minh", IsActive = true, CreatedAt = SeedTime },
+            new School { Id = Guid.Parse("10000000-0000-0000-0000-000000000019"), Name = "Đại học Công nghiệp TP.HCM", ShortName = "IUH", City = "TP. Hồ Chí Minh", IsActive = true, CreatedAt = SeedTime },
+            new School { Id = Guid.Parse("10000000-0000-0000-0000-000000000020"), Name = "Đại học Mở TP.HCM", ShortName = "OU", City = "TP. Hồ Chí Minh", IsActive = true, CreatedAt = SeedTime },
+            new School { Id = Guid.Parse("10000000-0000-0000-0000-000000000021"), Name = "Đại học Sài Gòn", ShortName = "SGU", City = "TP. Hồ Chí Minh", IsActive = true, CreatedAt = SeedTime },
+            new School { Id = Guid.Parse("10000000-0000-0000-0000-000000000022"), Name = "Đại học Văn Lang", ShortName = "VLU", City = "TP. Hồ Chí Minh", IsActive = true, CreatedAt = SeedTime },
+            new School { Id = Guid.Parse("10000000-0000-0000-0000-000000000023"), Name = "Đại học Tài chính - Marketing", ShortName = "UFM", City = "TP. Hồ Chí Minh", IsActive = true, CreatedAt = SeedTime },
+            new School { Id = Guid.Parse("10000000-0000-0000-0000-000000000024"), Name = "Đại học Nguyễn Tất Thành", ShortName = "NTTU", City = "TP. Hồ Chí Minh", IsActive = true, CreatedAt = SeedTime },
+            new School { Id = Guid.Parse("10000000-0000-0000-0000-000000000025"), Name = "Đại học Hoa Sen", ShortName = "HSU", City = "TP. Hồ Chí Minh", IsActive = true, CreatedAt = SeedTime },
         };
 
         modelBuilder.Entity<School>().HasData(schools);
@@ -39,14 +45,19 @@ public static class SeedData
     {
         var areas = new[]
         {
-            new Area { Id = Guid.Parse("20000000-0000-0000-0000-000000000001"), Name = "Ký túc xá Mỹ Đình", City = "Hà Nội", Description = "Khu ký túc xá sinh viên Mỹ Đình", IsActive = true, CreatedAt = SeedTime },
-            new Area { Id = Guid.Parse("20000000-0000-0000-0000-000000000002"), Name = "Cầu Giấy", City = "Hà Nội", Description = "Khu vực Cầu Giấy", IsActive = true, CreatedAt = SeedTime },
-            new Area { Id = Guid.Parse("20000000-0000-0000-0000-000000000003"), Name = "Đống Đa", City = "Hà Nội", Description = "Khu vực Đống Đa", IsActive = true, CreatedAt = SeedTime },
-            new Area { Id = Guid.Parse("20000000-0000-0000-0000-000000000004"), Name = "Hai Bà Trưng", City = "Hà Nội", Description = "Khu vực Hai Bà Trưng", IsActive = true, CreatedAt = SeedTime },
-            new Area { Id = Guid.Parse("20000000-0000-0000-0000-000000000005"), Name = "Thanh Xuân", City = "Hà Nội", Description = "Khu vực Thanh Xuân", IsActive = true, CreatedAt = SeedTime },
-            new Area { Id = Guid.Parse("20000000-0000-0000-0000-000000000006"), Name = "Hoàn Kiếm", City = "Hà Nội", Description = "Khu vực trung tâm Hoàn Kiếm", IsActive = true, CreatedAt = SeedTime },
-            new Area { Id = Guid.Parse("20000000-0000-0000-0000-000000000007"), Name = "Từ Liêm", City = "Hà Nội", Description = "Khu vực Bắc Từ Liêm và Nam Từ Liêm", IsActive = true, CreatedAt = SeedTime },
-            new Area { Id = Guid.Parse("20000000-0000-0000-0000-000000000008"), Name = "Hà Đông", City = "Hà Nội", Description = "Khu vực Hà Đông", IsActive = true, CreatedAt = SeedTime },
+            // TP. Hồ Chí Minh
+            new Area { Id = Guid.Parse("20000000-0000-0000-0000-000000000009"), Name = "Quận 1", City = "TP. Hồ Chí Minh", Description = "Khu vực trung tâm Quận 1", IsActive = true, CreatedAt = SeedTime },
+            new Area { Id = Guid.Parse("20000000-0000-0000-0000-00000000000a"), Name = "Quận 3", City = "TP. Hồ Chí Minh", Description = "Khu vực Quận 3", IsActive = true, CreatedAt = SeedTime },
+            new Area { Id = Guid.Parse("20000000-0000-0000-0000-00000000000b"), Name = "Quận 5", City = "TP. Hồ Chí Minh", Description = "Khu vực Quận 5 (gần Đại học Sư phạm, Đại học Y Dược)", IsActive = true, CreatedAt = SeedTime },
+            new Area { Id = Guid.Parse("20000000-0000-0000-0000-00000000000c"), Name = "Quận 10", City = "TP. Hồ Chí Minh", Description = "Khu vực Quận 10 (gần Đại học Bách Khoa)", IsActive = true, CreatedAt = SeedTime },
+            new Area { Id = Guid.Parse("20000000-0000-0000-0000-00000000000d"), Name = "Quận Thủ Đức", City = "TP. Hồ Chí Minh", Description = "Khu vực Thủ Đức (khu vực ĐHQG TP.HCM)", IsActive = true, CreatedAt = SeedTime },
+            new Area { Id = Guid.Parse("20000000-0000-0000-0000-00000000000e"), Name = "Bình Thạnh", City = "TP. Hồ Chí Minh", Description = "Khu vực Bình Thạnh (gần Đại học Ngoại thương, Đại học Văn Lang)", IsActive = true, CreatedAt = SeedTime },
+            new Area { Id = Guid.Parse("20000000-0000-0000-0000-00000000000f"), Name = "Tân Bình", City = "TP. Hồ Chí Minh", Description = "Khu vực Tân Bình", IsActive = true, CreatedAt = SeedTime },
+            new Area { Id = Guid.Parse("20000000-0000-0000-0000-000000000010"), Name = "Gò Vấp", City = "TP. Hồ Chí Minh", Description = "Khu vực Gò Vấp", IsActive = true, CreatedAt = SeedTime },
+            new Area { Id = Guid.Parse("20000000-0000-0000-0000-000000000011"), Name = "Quận 7", City = "TP. Hồ Chí Minh", Description = "Khu vực Quận 7", IsActive = true, CreatedAt = SeedTime },
+            new Area { Id = Guid.Parse("20000000-0000-0000-0000-000000000012"), Name = "Phú Nhuận", City = "TP. Hồ Chí Minh", Description = "Khu vực Phú Nhuận", IsActive = true, CreatedAt = SeedTime },
+            new Area { Id = Guid.Parse("20000000-0000-0000-0000-000000000013"), Name = "Nhà Bè", City = "TP. Hồ Chí Minh", Description = "Khu vực Nhà Bè (gần KTX ĐHQG TP.HCM)", IsActive = true, CreatedAt = SeedTime },
+            new Area { Id = Guid.Parse("20000000-0000-0000-0000-000000000014"), Name = "Hóc Môn", City = "TP. Hồ Chí Minh", Description = "Khu vực Hóc Môn", IsActive = true, CreatedAt = SeedTime },
         };
 
         modelBuilder.Entity<Area>().HasData(areas);

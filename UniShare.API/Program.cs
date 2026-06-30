@@ -4,6 +4,7 @@ using UniShare.API.Extensions;
 using UniShare.API.Filters;
 using UniShare.API.Hubs;
 using UniShare.API.Middleware;
+using UniShare.API.Data;
 using UniShare.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -59,13 +60,17 @@ app.MapControllers();
 app.MapHub<ChatHub>("/hubs/chat");
 app.MapHub<NotificationHub>("/hubs/notifications");
 
-// Seed admin user in development and Docker environments
-if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Docker"))
-{
-    using var scope = app.Services.CreateScope();
-    var seeder = scope.ServiceProvider.GetRequiredService<AdminSeedService>();
-    await seeder.SeedAdminIfNotExistsAsync("admin@unishare.edu.vn", "Admin@123456!");
-}
+// // Seed admin user in development and Docker environments
+// if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Docker"))
+// {
+//     using var scope = app.Services.CreateScope();
+//     var adminSeeder = scope.ServiceProvider.GetRequiredService<AdminSeedService>();
+//     await adminSeeder.SeedAdminIfNotExistsAsync("admin@unishare.edu.vn", "Admin@123456");
+
+//     // Seed test data for development
+//     var testDataSeeder = scope.ServiceProvider.GetRequiredService<TestDataSeeder>();
+//     await testDataSeeder.SeedAsync();
+// }
 
 app.Run();
 
