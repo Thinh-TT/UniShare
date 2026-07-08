@@ -1,0 +1,135 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family:
+        Segoe UI,
+        sans-serif;
+
+    background: #f8fafc;
+
+    color: #222;
+}
+
+header {
+    text-align: center;
+
+    padding: 50px 20px;
+}
+
+.logo {
+    width: 100px;
+}
+
+h1 {
+    color: #16a34a;
+
+    margin-top: 15px;
+}
+
+.subtitle {
+    margin-top: 10px;
+
+    color: #666;
+}
+
+.hero {
+    text-align: center;
+
+    margin: 30px;
+}
+
+.phone {
+    width: 260px;
+
+    border-radius: 25px;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.download {
+    text-align: center;
+
+    margin: 50px;
+}
+
+.button {
+    display: inline-block;
+
+    padding: 18px 40px;
+
+    background: #16a34a;
+
+    color: white;
+
+    text-decoration: none;
+
+    border-radius: 12px;
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    transition: 0.3s;
+}
+
+.button:hover {
+    background: #15803d;
+}
+
+.features {
+    max-width: 700px;
+
+    margin: auto;
+
+    padding: 20px;
+}
+
+.features h2 {
+    text-align: center;
+
+    margin-bottom: 25px;
+}
+
+.card {
+    background: white;
+
+    margin: 15px;
+
+    padding: 20px;
+
+    border-radius: 12px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.gallery {
+    display: flex;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 20px;
+
+    padding: 40px;
+}
+
+.gallery img {
+    width: 220px;
+
+    border-radius: 15px;
+
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+footer {
+    text-align: center;
+
+    padding: 30px;
+
+    color: #888;
+}
