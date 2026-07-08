@@ -83,6 +83,24 @@ class _CreateListingScreenState extends ConsumerState<CreateListingScreen> {
     });
   }
 
+  bool _controllersSynced = false;
+
+  void _syncControllersFromState(ListingFormState formState) {
+    if (_controllersSynced) return;
+    _controllersSynced = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _titleController.text = formState.title;
+      _descriptionController.text = formState.description;
+      _priceController.text = formState.pricePerDay > 0
+          ? formState.pricePerDay.toStringAsFixed(0)
+          : '';
+      _depositController.text = formState.depositAmount > 0
+          ? formState.depositAmount.toStringAsFixed(0)
+          : '';
+      _conditionController.text = formState.conditionNote;
+    });
+  }
+
   Future<void> _showCategoryPicker() async {
     final categoriesAsync = ref.read(categoriesProvider);
     final categories = categoriesAsync.valueOrNull;
@@ -232,20 +250,8 @@ class _CreateListingScreenState extends ConsumerState<CreateListingScreen> {
     final formState = ref.watch(listingFormProvider);
     _initListeners();
 
-    // Sync controllers with form state (only on external changes, not from controllers)
-    if (!_initialized) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _titleController.text = formState.title;
-        _descriptionController.text = formState.description;
-        _priceController.text = formState.pricePerDay > 0
-            ? formState.pricePerDay.toStringAsFixed(0)
-            : '';
-        _depositController.text = formState.depositAmount > 0
-            ? formState.depositAmount.toStringAsFixed(0)
-            : '';
-        _conditionController.text = formState.conditionNote;
-      });
-    }
+    // Sync controllers with form state on first build (needed for edit mode).
+    _syncControllersFromState(formState);
 
     final isBorrow = formState.listingType == ListingType.borrow;
 
@@ -268,7 +274,7 @@ class _CreateListingScreenState extends ConsumerState<CreateListingScreen> {
                 hintText: 'Nhập tên đồ dùng',
                 controller: _titleController,
                 maxLines: 1,
-                validator: (_) => formState.titleError,
+                errorText: formState.titleError,
               ),
               const SizedBox(height: 16),
 
@@ -430,7 +436,7 @@ class _CreateListingScreenState extends ConsumerState<CreateListingScreen> {
                 hintText: 'Mô tả chi tiết về đồ dùng',
                 controller: _descriptionController,
                 maxLines: 5,
-                validator: (_) => formState.descriptionError,
+                errorText: formState.descriptionError,
               ),
               const SizedBox(height: 16),
 

@@ -378,7 +378,7 @@ class _EditListingScreenState extends ConsumerState<EditListingScreen> {
                     hintText: 'Nhập tên đồ dùng',
                     controller: _titleController,
                     maxLines: 1,
-                    validator: (_) => formState.titleError,
+                    errorText: formState.titleError,
                   ),
                   const SizedBox(height: 16),
 
@@ -488,6 +488,15 @@ class _EditListingScreenState extends ConsumerState<EditListingScreen> {
                     keyboardType: TextInputType.number,
                     enabled: !isBorrow,
                   ),
+                  if (formState.priceError != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4, left: 4),
+                      child: Text(
+                        formState.priceError!,
+                        style: const TextStyle(
+                            color: AppColors.danger, fontSize: 12),
+                      ),
+                    ),
                   const SizedBox(height: 16),
 
                   // Deposit
@@ -498,6 +507,15 @@ class _EditListingScreenState extends ConsumerState<EditListingScreen> {
                       controller: _depositController,
                       keyboardType: TextInputType.number,
                     ),
+                  if (!isBorrow && formState.depositError != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4, left: 4),
+                      child: Text(
+                        formState.depositError!,
+                        style: const TextStyle(
+                            color: AppColors.danger, fontSize: 12),
+                      ),
+                    ),
                   if (!isBorrow) const SizedBox(height: 16),
 
                   // Condition note
@@ -507,6 +525,15 @@ class _EditListingScreenState extends ConsumerState<EditListingScreen> {
                     controller: _conditionController,
                     maxLines: 2,
                   ),
+                  if (formState.conditionNoteError != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4, left: 4),
+                      child: Text(
+                        formState.conditionNoteError!,
+                        style: const TextStyle(
+                            color: AppColors.danger, fontSize: 12),
+                      ),
+                    ),
                   const SizedBox(height: 16),
 
                   // Description
@@ -515,7 +542,7 @@ class _EditListingScreenState extends ConsumerState<EditListingScreen> {
                     hintText: 'Mô tả chi tiết về đồ dùng',
                     controller: _descriptionController,
                     maxLines: 5,
-                    validator: (_) => formState.descriptionError,
+                    errorText: formState.descriptionError,
                   ),
                   const SizedBox(height: 16),
 
@@ -624,6 +651,15 @@ class _EditListingScreenState extends ConsumerState<EditListingScreen> {
                       ),
                     ],
                   ),
+                  if (formState.tagsError != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4, left: 4),
+                      child: Text(
+                        formState.tagsError!,
+                        style: const TextStyle(
+                            color: AppColors.danger, fontSize: 12),
+                      ),
+                    ),
                   if (formState.tags.isNotEmpty) ...[
                     const SizedBox(height: 8),
                     Wrap(
